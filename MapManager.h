@@ -9,7 +9,7 @@
 #include "main.h"
 #endif // !MAIN_H
 
-#define MAP_SIZE (100)
+#define MAP_SIZE 50
 
 class Map
 {
@@ -36,6 +36,8 @@ private:
 
 	int m_Map[MAP_SIZE][MAP_SIZE];
 	float subX, subY;
-		
+	
+	unsigned int m_MouseTex;
+
 };
 

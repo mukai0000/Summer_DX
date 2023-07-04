@@ -319,16 +319,18 @@ void UninitMouse()
 //-----------------------------------------------------------
 HRESULT UpdateMouse(HWND hWnd)
 {
-	POINT po;										//マウスのポインタの座標取得
+	POINT po;																//マウスのポインタの座標取得
 	GetCursorPos(&po);
+	
+	ScreenToClient(hWnd, &po);												//スクリーン座標をクライアント座標に変換
 
-	POINT cPo = { 0,0 };							//クライアント領域の左上の座標(x0,y0)をスクリーン座標に変換
-	ClientToScreen(hWnd, &cPo);
+	RECT rec;
+	GetClientRect(hWnd, &rec);												//クライアント領域の大きさを取得
 
-	po.x -= cPo.x;									//クライアント領域の原点とマウスポインタの差分を取得	
-	po.y -= cPo.y;
+	mousePosition = { (float)po.x,(float)po.y };							//差分をマウスポジションに代入　　DirectXで使うから使いやすいようにPOINTのままではなくD3DXVECTOR2に変更
 
-	mousePosition = { (float)po.x,(float)po.y };	//差分をマウスポジションに代入　　DirectXで使うから使いやすいようにPOINTのままではなくD3DXVECTOR2に変更
+	mousePosition.x = mousePosition.x / rec.right * SCREEN_WIDTH;			//このプログラムのクライアント領域は仮想1080pだから　本当の座標(po.x/rec.right,b po.y/rec.bottom)の割合をfullHDにかけてあげた値がクライアント領域上のマウスの位置
+	mousePosition.y = mousePosition.y / rec.bottom * SCREEN_HEIGHT;	
 
 
 	HRESULT result;
