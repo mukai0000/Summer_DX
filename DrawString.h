@@ -1,0 +1,15 @@
+#pragma once
+
+#include <string>
+
+//======================================================
+//  ï∂éöï\é¶
+//	ïêì°äCêl			2023/07/02
+//======================================================
+
+using namespace std;
+
+void InitString();
+void UninitString();
+
+void DrawString(string str);
