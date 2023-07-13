@@ -105,15 +105,17 @@ void Map::DrawMapManager()
 
 
 	int numY = 0;			//地平線から何個目のやつかのYバージョン
-	float hWideT, hWideB, lineT, lineB, subAngle;
+	float hWideT, hWideB, lineT, lineB, subAngle,topAngle,bottomAngle;
 
 
 
 	for (int y = sy - HORIZON_TO_PLAYER; y < sy + PLAYER_TO_UNDER; y++) {		//描画する数を制限
-		
+		topAngle = HULF_PI * DRAW_ANGLE_Y * numY + subAngle;
+		bottomAngle = HULF_PI * DRAW_ANGLE_Y * (numY + 1) + subAngle;
+
 		subAngle = HULF_PI * DRAW_ANGLE_Y * subY;
-		hWideT = 1 - cosf(HULF_PI * DRAW_ANGLE_Y * numY + subAngle);
-		hWideB = 1 - cosf(HULF_PI * DRAW_ANGLE_Y * (numY + 1) + subAngle);
+		hWideT = 1 - cosf(topAngle);
+		hWideB = 1 - cosf(bottomAngle);
 
 		lineT = hrizon + under * hWideT;
 		lineB = hrizon + under * hWideB;
@@ -137,8 +139,8 @@ void Map::DrawMapManager()
 			};
 
 			
-			wideT = WIDE_WIDE+ WIDE_WIDE*(sinf(HULF_PI * DRAW_ANGLE_Y * numY + subAngle));		//この数字をかける
-			wideB = WIDE_WIDE+ WIDE_WIDE*(sinf( HULF_PI * DRAW_ANGLE_Y * (numY+1) + subAngle));
+			wideT = WIDE_WIDE+ WIDE_WIDE*(sinf(topAngle));		//この数字をかける
+			wideB = WIDE_WIDE+ WIDE_WIDE*(sinf(bottomAngle));
 			
 
 			/*lt = 0;
@@ -155,8 +157,9 @@ void Map::DrawMapManager()
 			if (numY == 0) {
 				DrawBoxColor_TB_FOUR(&hrizon, &lineB, &lt, &rt, &lb, &rb, &col);
 			}
-
-			DrawBoxColor_TB_FOUR(&lineT, &lineB, &lt, &rt, &lb, &rb, &col);
+			else {
+				DrawBoxColor_TB_FOUR(&lineT, &lineB, &lt, &rt, &lb, &rb, &col);
+			}
 
 			numX++;
 		}
