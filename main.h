@@ -21,7 +21,7 @@
 #include <d3dx9.h>
 
 #define DIRECTINPUT_VERSION 0x0800		// Œx‘Îˆ
-#include "dinput.h"
+#include "dinput.h"         //xinput
 #include "mmsystem.h"
 
 #pragma warning(pop)

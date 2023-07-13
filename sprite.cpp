@@ -24,12 +24,16 @@
 //*****************************************************************************
 static ID3D11Buffer				*g_VertexBuffer = NULL;	// 頂点情報
 
+unsigned int g_NumberSumple;
+
 
 //=============================================================================
 // 初期化処理
 //=============================================================================
 void InitSprite(void)
 {
+	g_NumberSumple = LoadTexture((char*)"data/TEXTURE/number.png");
+
 	ID3D11Device *pDevice = GetDevice();
 
 	// 頂点バッファ生成
@@ -694,4 +698,17 @@ void DrawBox_LTRB(D3DXVECTOR2 lt, D3DXVECTOR2 rb, D3DXCOLOR color)
 
 	// ポリゴン描画
 	GetDeviceContext()->Draw(BOX_VERTEX_NUM, 0);
+}
+
+void DrawNumberSumple(D3DXVECTOR2 pos, D3DXVECTOR2 size, int target)
+{
+	//1000の位
+	int num = target / 1000;
+	DrawSprite(g_NumberSumple, pos.x, pos.y, size.x * 0.7f, size.y, 0.1f * num, 0, 0.1f, 1);
+	num = target / 100 % 10;
+	DrawSprite(g_NumberSumple, pos.x + size.x * 0.7f, pos.y, size.x * 0.7f, size.y, 0.1f * num, 0, 0.1f, 1);
+	num = target / 10 % 10;
+	DrawSprite(g_NumberSumple, pos.x + size.x * 1.4f, pos.y, size.x * 0.7f, size.y, 0.1f * num, 0, 0.1f, 1);
+	num = target % 10;
+	DrawSprite(g_NumberSumple, pos.x + size.x * 2.1f, pos.y, size.x * 0.7f, size.y, 0.1f * num, 0, 0.1f, 1);
 }

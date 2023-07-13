@@ -23,21 +23,27 @@ public:
 	void DrawMapManager();
 
 	//補助
-	void SetAddXMove(float x) { m_x += x; }
-	void SetAddYMove(float y) { m_y += y; }
+	void SetAddXMove(float x) { move.x += x; }			//これは描画に必要なやつ
+	void SetAddYMove(float y) { move.y += y; }
+
 
 private:
-
-	float m_x, m_y;						//どれだけずらして表示するかを記憶する部分
 
 	D3DXVECTOR2* m_PlayerPos;			//プレイヤーの場所を取得するために必要なもの
 
 	D3DXVECTOR2 sumple;
+
+	D3DXVECTOR2 move;					//動いた時の座標をそのまま使うと反転しちゃうから　動いた場合と描画の場合を切り離す
+
+	D3DXVECTOR2 mouse;
 
 	int m_Map[MAP_SIZE][MAP_SIZE];
 	float subX, subY;
 	
 	unsigned int m_MouseTex;
 
+	unsigned int m_BGTex;
+
+	bool isMouse;
 };
 

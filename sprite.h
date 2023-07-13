@@ -40,3 +40,5 @@ void DrawSprite(TEXTURE_DATA* tex, D3DXVECTOR2* pos, D3DXVECTOR2* size);
 
 void DrawBox_LTRB(D3DXVECTOR2* lt, D3DXVECTOR2* rb, D3DXCOLOR* color);
 void DrawBox_LTRB(D3DXVECTOR2 lt, D3DXVECTOR2 rb, D3DXCOLOR color);
+
+void DrawNumberSumple(D3DXVECTOR2 pos, D3DXVECTOR2 size, int target);

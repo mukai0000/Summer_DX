@@ -16,6 +16,7 @@ void UninitGame()
 
 void UpdateGame()
 {
+	mm->UpdateMapManager();
 }
 
 void DrawGame()
