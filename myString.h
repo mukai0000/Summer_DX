@@ -1,4 +1,8 @@
 #pragma once
+#include <string>
+#include "main.h"
+
+using namespace std;
 
 typedef enum {
 	STRING_SPACE,
@@ -157,11 +161,11 @@ typedef enum {
 	STRING_HIRA_GU,
 	STRING_HIRA_GE,
 	STRING_HIRA_GO,
-	STRING_HIRA_SA,
-	STRING_HIRA_SI,
-	STRING_HIRA_SU,
-	STRING_HIRA_SE,
-	STRING_HIRA_SO,
+	STRING_HIRA_ZA,
+	STRING_HIRA_ZI,
+	STRING_HIRA_ZU,
+	STRING_HIRA_ZE,
+	STRING_HIRA_ZO,
 	STRING_HIRA_DA,
 	STRING_HIRA_DI,
 	STRING_HIRA_DU,
@@ -177,6 +181,11 @@ typedef enum {
 	STRING_HIRA_PU,
 	STRING_HIRA_PE,
 	STRING_HIRA_PO,
+	//小さいやゆよ
+	STRING_HIRA_SMOLL_TU,
+	STRING_HIRA_SMOLL_YA,
+	STRING_HIRA_SMOLL_YU,
+	STRING_HIRA_SMOLL_YO,
 
 
 	//カタカナ
@@ -232,11 +241,11 @@ typedef enum {
 	STRING_KANA_GU,
 	STRING_KANA_GE,
 	STRING_KANA_GO,
-	STRING_KANA_SA,
-	STRING_KANA_SI,
-	STRING_KANA_SU,
-	STRING_KANA_SE,
-	STRING_KANA_SO,
+	STRING_KANA_ZA,
+	STRING_KANA_ZI,
+	STRING_KANA_ZU,
+	STRING_KANA_ZE,
+	STRING_KANA_ZO,
 	STRING_KANA_DA,
 	STRING_KANA_DI,
 	STRING_KANA_DU,
@@ -252,6 +261,11 @@ typedef enum {
 	STRING_KANA_PU,
 	STRING_KANA_PE,
 	STRING_KANA_PO,
+	//小文字のツヤユヨ
+	STRING_KANA_SMOLL_TU,
+	STRING_KANA_SMOLL_YA,
+	STRING_KANA_SMOLL_YU,
+	STRING_KANA_SMOLL_YO,
 
 	//日本語記号
 	STRING_JAP_TOUTEN,
@@ -260,8 +274,27 @@ typedef enum {
 	STRING_JAP_KARA
 }MY_STRIUNG;
 
-class myString
+
+typedef enum {
+	FONT_1,
+	FONT_2
+}STRING_FONT;
+
+
+class MyString
 {
-	
+public:
+	MyString(string text);
+	~MyString();
+
+	void DrawString(D3DXVECTOR2 pos, D3DXVECTOR2 size, D3DXCOLOR col);
+
+private:
+
+	void ChangeCode(string text);
+
+	unsigned char* m_Text = nullptr;		//表示するテキスト
+
+	int m_Size;
 };
 

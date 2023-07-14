@@ -3,6 +3,8 @@
 #include "sprite.h"
 #include "main.h"
 
+#include "myString.h"
+
 #include <windows.h>
 
 #define BLOCK_SIZE					50
@@ -110,10 +112,12 @@ void Map::DrawMapManager()
 
 
 	for (int y = sy - HORIZON_TO_PLAYER; y < sy + PLAYER_TO_UNDER; y++) {		//•`‰æ‚·‚é”‚ð§ŒÀ
+
+		subAngle = HULF_PI * DRAW_ANGLE_Y * subY;
+
 		topAngle = HULF_PI * DRAW_ANGLE_Y * numY + subAngle;
 		bottomAngle = HULF_PI * DRAW_ANGLE_Y * (numY + 1) + subAngle;
 
-		subAngle = HULF_PI * DRAW_ANGLE_Y * subY;
 		hWideT = 1 - cosf(topAngle);
 		hWideB = 1 - cosf(bottomAngle);
 
@@ -184,5 +188,15 @@ void Map::DrawMapManager()
 	HCURSOR hcu;
 	
 	
-	DrawNumberSumple(D3DXVECTOR2(100, 100), D3DXVECTOR2(50, 50), sumple.y);
+	//DrawNumberSumple(D3DXVECTOR2(100, 100), D3DXVECTOR2(50, 50), sumple.y);
+
+	MyString* ms = new MyString("‚È‚Â‚Í‚ ‚Â‚¢‚Ë");
+
+	D3DXVECTOR2 sp = { 0,0, };
+	D3DXVECTOR2 ss = { 100,100, };
+	D3DXCOLOR sc = { 1,1,1,1 };
+
+	ms->DrawString(sp,ss,sc);
+
+	delete ms;
 }
