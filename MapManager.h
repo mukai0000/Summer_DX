@@ -37,7 +37,7 @@ private:
 
 	D3DXVECTOR2 mouse;
 
-	int m_Map[MAP_SIZE][MAP_SIZE];
+	char m_Map[MAP_SIZE][MAP_SIZE];
 	float subX, subY;
 	
 	unsigned int m_MouseTex;

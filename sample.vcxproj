@@ -135,6 +135,7 @@
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MapManager.cpp" />
+    <ClCompile Include="myString.cpp" />
     <ClCompile Include="polygon.cpp" />
     <ClCompile Include="renderer.cpp" />
     <ClCompile Include="sprite.cpp" />
@@ -149,6 +150,7 @@
     <ClInclude Include="Item.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="MapManager.h" />
+    <ClInclude Include="myString.h" />
     <ClInclude Include="polygon.h" />
     <ClInclude Include="renderer.h" />
     <ClInclude Include="sprite.h" />

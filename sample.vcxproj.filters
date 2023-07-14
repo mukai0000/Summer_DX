@@ -63,6 +63,9 @@
     <ClCompile Include="DrawString.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="myString.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -99,6 +102,9 @@
       <Filter>ヘッダー ファイル\EFECT</Filter>
     </ClInclude>
     <ClInclude Include="DrawString.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="myString.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
