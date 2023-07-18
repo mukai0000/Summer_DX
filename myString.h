@@ -1,4 +1,13 @@
+//====================================
+//	myString.h	自作文字コード？
+//	武藤海人		2023/07/17
+//====================================
+
 #pragma once
+
+#ifndef MY_STRING_H
+#define MY_STRING_H
+
 #include <string>
 #include "main.h"
 
@@ -289,12 +298,31 @@ public:
 
 	void DrawString(D3DXVECTOR2 pos, D3DXVECTOR2 size, D3DXCOLOR col);
 
+	int GetStringSize() { return m_Size; }
+
 private:
 
-	void ChangeCode(string text);
+	void GetStringLength(string text);			//受け取った文字列を専用の文字列に変換するときにその文字列の大きさを指定するための関数
 
-	unsigned char* m_Text = nullptr;		//表示するテキスト
+	void ChangeCode(string text);				//Stringを専用の文字コードに変換
 
-	int m_Size;
+	uint8_t GetMultiKigo_129(uint8_t index);		//受け取った文字コードを専用の文字コードに変換する関数　記号
+	uint8_t GetJAPHira_130(uint8_t index);			//上のひらがな版	それに合わせて全角数字
+	uint8_t GetJAPKata_131(uint8_t index);			//上のカタカナ版
+	uint8_t GetENG_Single(uint8_t index);			//上の英語版？全角の英語版を作ろうと思ったけど、特殊な入力を行わないと全角にならないから必要ないかも
+
+
+	uint8_t* m_Text = nullptr;					//表示するテキスト 文字数に応じて大きさを変える
+
+	int m_Size;									//文字烈の大きさ
+
+public:
+	//文字参照に使う文字列
+	static string m_Hira;
+	static string m_Kata;
+	static string m_Kigo;
 };
 
+
+
+#endif // !MY_STRING

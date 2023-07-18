@@ -93,7 +93,7 @@ void Map::DrawMapManager()
 
 
 	//プレイヤーのいるY座標を簡易変換？
-	int sy = sumple.y / 50;									//プレイヤーの今いる簡易Y座標
+	int sy =(int) sumple.y / 50;									//プレイヤーの今いる簡易Y座標
 	float subY = (float)((int)move.y % 50) / 50.0f;			//プレイヤーのY座標の差分	子の差分のぶんだけマップの座標の描画をずらして移動しているように見せる　これに
 	
 	float hrizon = SCREEN_HEIGHT * 0.2f;					//マップ描画の地平線　
@@ -101,7 +101,7 @@ void Map::DrawMapManager()
 
 
 	//プレイヤーのいるX座標を簡易変換
-	int sx = sumple.x / 50;
+	int sx = (int)sumple.x / 50;
 	float subX = (float)((int)sumple.x % 50) / 50.0f;		//プレイヤーのX座標の差分
 
 
@@ -182,15 +182,15 @@ void Map::DrawMapManager()
 
 	//DrawSpriteLeftTop(m_MouseTex, mouse.x, mouse.y, 30, 30, 0, 0, 1, 1);
 	DrawSpriteLeftTop(m_MouseTex, GetMousePosition().x, GetMousePosition().y, 30, 30, 0, 0, 1, 1);
-	//ShowCursor(true);
-	ShowCursor(false);
+	ShowCursor(true);
+	//ShowCursor(false);
 
 	HCURSOR hcu;
 	
 	
 	//DrawNumberSumple(D3DXVECTOR2(100, 100), D3DXVECTOR2(50, 50), sumple.y);
 
-	MyString* ms = new MyString("なつはあついね");
+	MyString* ms = new MyString("あいあいあ");
 
 	D3DXVECTOR2 sp = { 0,0, };
 	D3DXVECTOR2 ss = { 100,100, };
