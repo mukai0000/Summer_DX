@@ -725,11 +725,11 @@ void DrawAnimation_LT(TEXTURE_DATA* tex, D3DXVECTOR2* pos, D3DXVECTOR2* size, D3
 
 	VERTEX_3D* vertex = (VERTEX_3D*)msr.pData;
 
-	float uw = 1.0f / tex->wide;
-	float vh = 1.0f / tex->hight;
+	float uw = 1.0f / (int)tex->wide;
+	float vh = 1.0f / (int)tex->hight;
 
-	int u = target % tex->wide;
-	int v = target / tex->wide;
+	int u = target % (int)tex->wide;
+	int v = target / (int)tex->wide;
 
 	// 頂点０番（左上の頂点）
 	vertex[0].Position = D3DXVECTOR3(pos->x, pos->y, 0.0f);

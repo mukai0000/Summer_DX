@@ -190,10 +190,14 @@ void Map::DrawMapManager()
 	
 	//DrawNumberSumple(D3DXVECTOR2(100, 100), D3DXVECTOR2(50, 50), sumple.y);
 
-	MyString* ms = new MyString("‚ ‚¢‚ ‚¢‚ ");
+
+
+	MyString* ms = new MyString("World Wide Pokemon Project");
+
+
 
 	D3DXVECTOR2 sp = { 0,0, };
-	D3DXVECTOR2 ss = { 100,100, };
+	D3DXVECTOR2 ss = { 50,50, };
 	D3DXCOLOR sc = { 1,1,1,1 };
 
 	ms->DrawString(sp,ss,sc);

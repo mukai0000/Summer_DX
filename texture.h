@@ -12,9 +12,9 @@
 
 typedef struct {
 	unsigned int texCord;
-	int wide;
-	int hight;
-	int maxAnim;
+	uint8_t wide;
+	uint8_t hight;
+	uint8_t maxAnim;
 }TEXTURE_DATA;
 
 
@@ -24,4 +24,4 @@ void UninitTexture(void);
 
 ID3D11ShaderResourceView** GetTexture(int index);
 
-TEXTURE_DATA SetTexture(std::string fileName, int w, int h, int a);
+TEXTURE_DATA SetTexture(std::string fileName, uint8_t w, uint8_t h, uint8_t a);

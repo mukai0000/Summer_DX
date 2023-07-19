@@ -5,24 +5,25 @@
 
 #include "myString.h"
 
-#include "texture.h"
 
 #include "sprite.h"
 #include <Windows.h>
 
-static TEXTURE_DATA g_StringTex = { NULL,0,0,0 };
+TEXTURE_DATA MyString::m_StringTex = { NULL,0,0,0 };
 
 
 string MyString::m_Hira = "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをんがぎぐげござじずぜぞだぢづでどばびぶべぼぱぴぷぺぽっゃゅょ";				//平仮名
 string MyString::m_Kata = "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンガギグゲゴザジズゼゾダヂヅデドバビブベボパピプペポッャュョ";				//カタカナ
-string MyString::m_Kigo = "　！”＃＄％＆’（）";				//全角記号
+string MyString::m_Kigo = "　！”＃＄％＆’（）＊＋、－。／０１２３４５６７８９：；＜＝＞？＠";				//全角記号
+string MyString::m_Eng = "";
+
 
 
 MyString::MyString(string text)
 {
 	//テクスチャが読み込まれてなかったら
-	if(g_StringTex.texCord == NULL){
-		g_StringTex = SetTexture("data/TEXTURE/hira.png", 16, 16, 256);
+	if(m_StringTex.texCord == NULL){
+		m_StringTex = SetTexture("data/TEXTURE/hira.png", 16, 16, 256);
 	}
 
 
@@ -37,7 +38,7 @@ void MyString::DrawString(D3DXVECTOR2 pos, D3DXVECTOR2 size,D3DXCOLOR col)
 	D3DXVECTOR2 pp=pos;
 	for (int i = 0; i < m_Size; i++) {
 		pp.x = pos.x + size.x * i;
-		DrawAnimation_LT(&g_StringTex, &pp, &size, col, m_Text[i]);
+		DrawAnimation_LT(&m_StringTex, &pp, &size, col, m_Text[i]);
 	}
 }
 
@@ -64,7 +65,7 @@ void MyString::ChangeCode(string text)
 	//テキストの大きさ取得
 	GetStringLength(text);
 
-	m_Text = new unsigned char[m_Size];	//文字列
+	m_Text = new uint8_t[m_Size];	//文字列
 
 	int st, i;		//st ターゲットのストリングの場所　i 繰り返す回数
 	st = i = 0;
@@ -74,7 +75,7 @@ void MyString::ChangeCode(string text)
 	while (i < m_Size) {
 		isMulti = IsDBCSLeadByte(text[st]);		//マルチバイトかシングルバイトかを取得
 
-		unsigned char buffer = 0;
+		uint8_t buffer = 0;
 
 		if (isMulti)			//マルチバイト文字の先行バイトだったら
 		{
@@ -117,7 +118,7 @@ void MyString::ChangeCode(string text)
 	m_Text[m_Size] = '\0';
 }
 
-unsigned char MyString::GetMultiKigo_129(uint8_t index)
+uint8_t MyString::GetMultiKigo_129(uint8_t index)
 {
 	//　６４～１５１
 
@@ -126,15 +127,15 @@ unsigned char MyString::GetMultiKigo_129(uint8_t index)
 	return 0;
 }
 
-unsigned char MyString::GetJAPHira_130(uint8_t index)
+uint8_t MyString::GetJAPHira_130(uint8_t index)
 {
-	int count = 0;
-
 	//全角数字
 	if (index >= 79 && index <= 88) {	
 		uint8_t num = index - 79;
 		return num + STRING_ZERO;
 	}
+
+	int count = 0;
 
 	//平仮名
 	for (int i = 1; i < m_Hira.length(); i += 2) {
@@ -147,13 +148,24 @@ unsigned char MyString::GetJAPHira_130(uint8_t index)
 	return STRING_QUESTION;
 }
 
-unsigned char MyString::GetJAPKata_131(uint8_t index)
+uint8_t MyString::GetJAPKata_131(uint8_t index)
 {
-	return 0;
+	int count = 0;
+	for (int i = 1; i < m_Kata.length(); i += 2) {
+		if ((uint8_t)m_Kata[i] == index) {
+			return STRING_KANA_A + count;
+		}
+		count++;
+	}
+
+	return STRING_QUESTION;
 }
 
-unsigned char MyString::GetENG_Single(uint8_t index)
+uint8_t MyString::GetENG_Single(uint8_t index)
 {
+	if (index >= 48) {
+		return index - 48 + STRING_ZERO;
+	}
 	return 0;
 }
 

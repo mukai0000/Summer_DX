@@ -10,6 +10,7 @@
 
 #include <string>
 #include "main.h"
+#include "texture.h"
 
 using namespace std;
 
@@ -300,6 +301,7 @@ public:
 
 	int GetStringSize() { return m_Size; }
 
+
 private:
 
 	void GetStringLength(string text);			//受け取った文字列を専用の文字列に変換するときにその文字列の大きさを指定するための関数
@@ -316,11 +318,14 @@ private:
 
 	int m_Size;									//文字烈の大きさ
 
-public:
+	//静的変数
+
+	static TEXTURE_DATA m_StringTex;
 	//文字参照に使う文字列
 	static string m_Hira;
 	static string m_Kata;
 	static string m_Kigo;
+	static string m_Eng;
 };
 
 

@@ -105,7 +105,8 @@ ID3D11ShaderResourceView** GetTexture(int index)
 	return &g_pTexture[index];
 }
 
-TEXTURE_DATA SetTexture(std::string fileName, int w, int h, int a)
+
+TEXTURE_DATA SetTexture(std::string fileName, uint8_t w, uint8_t h, uint8_t a)
 {
 	TEXTURE_DATA ret;
 	ret.texCord = LoadTexture((char*)fileName.c_str());
