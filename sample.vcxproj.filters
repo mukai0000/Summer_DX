@@ -25,15 +25,24 @@
     <Filter Include="ヘッダー ファイル\EFECT">
       <UniqueIdentifier>{1b81dff8-11cb-46b4-9558-43af112255a3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Entity">
+      <UniqueIdentifier>{26279739-c76a-4c9f-86a0-1d125bdeafb6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Entity">
+      <UniqueIdentifier>{1b7e6b1c-9c49-4bb7-bd75-31a22b86feaa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Item">
+      <UniqueIdentifier>{e988a82a-1317-47b1-956d-9daaf01eec27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Item">
+      <UniqueIdentifier>{e142650b-3b7a-4ab1-a0a4-a680395b63e8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="BoxTransform.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Item.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="input.cpp">
@@ -66,8 +75,20 @@
     <ClCompile Include="myString.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Entity.cpp">
+    <ClCompile Include="Object.cpp">
       <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Buff.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="UI.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>ソース ファイル\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Inventory.cpp">
+      <Filter>ソース ファイル\Item</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -75,9 +96,6 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="BoxTransform.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Item.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="input.h">
@@ -110,8 +128,20 @@
     <ClInclude Include="myString.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Entity.h">
+    <ClInclude Include="Object.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Buff.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="UI.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>ヘッダー ファイル\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Inventory.h">
+      <Filter>ヘッダー ファイル\Item</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
