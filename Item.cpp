@@ -8,10 +8,10 @@ void Item::SetItemIcon(string filename, int w, int h, int a)
 	m_ItemTex.maxAnim = a;
 }
 
-Potion::Potion()
+Potion::Potion() :Item(5)
 {
 	SetItemName("É|Å[ÉVÉáÉì");
-
+	SetItemKind(ITEM_KIND::ITEM_USE);
 }
 
 ItemDataBath::ItemDataBath()

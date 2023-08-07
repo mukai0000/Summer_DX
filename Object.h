@@ -10,7 +10,6 @@
 #include <string>
 #include "main.h"
 
-
 //===========================================
 //			列挙体
 //===========================================
@@ -37,7 +36,7 @@ typedef struct {				//　ステータス　255を上限にしたい〇
 	uint8_t			mgc;
 }ENTITY_POTENTIAL_STATUS;
 
-typedef struct{					//　実数ステータス
+typedef struct {					//　実数ステータス
 	uint8_t			lv;			//	レベル　	構造体にしなくてもいいかも
 	int				hp;			//	hp			vitや装備によって変化
 	int				mp;			//　mp			mgcや装備によって変化
@@ -45,6 +44,7 @@ typedef struct{					//　実数ステータス
 	int				mat;		//　魔法攻撃力	使わないかも
 	int				def;		//	防御力　　　装備によってのみ変化　かモンスターとのレベル差でつけたい
 }ENTITY_STATUS;
+
 
 using namespace std;
 
@@ -54,39 +54,26 @@ public:
 	Object();
 	~Object();
 
-	D3DXVECTOR2*	GetPosition		()							{ return &m_Trans.pos; }
-	D3DXVECTOR2*	GetSize			()							{ return &m_Trans.size; }
+	//D3DXVECTOR2*	GetPosition		()							{ return &m_Trans.pos; }
+	//D3DXVECTOR2*	GetSize			()							{ return &m_Trans.size; }
 	
 	//３Ｄ描画するためにプレイヤーからの距離、Ｙをしゅとくする
-	float* GetPositionY() { return &GetPosition()->y; }
+	//float* GetPositionY() { return &GetPosition()->y; }
 
 
-	void			SetPosition(D3DXVECTOR2 pos) { m_Trans.pos = pos; }
-	void			SetSize(D3DXVECTOR2 size) { m_Trans.size = size; }
+	//void			SetPosition(D3DXVECTOR2 pos) { m_Trans.pos = pos; }
+	//void			SetSize(D3DXVECTOR2 size) { m_Trans.size = size; }
 
 protected:
-	OBJECT_KIND_TAG m_ObjTag;
+	//OBJECT_KIND_TAG m_ObjTag;
 
-	ENTITY_TRANSFORM m_Trans;
+	//ENTITY_TRANSFORM m_Trans;
 };
 
 class FieldObj :public Object{
 public:
 	FieldObj();
 	~FieldObj();
-
-};
-
-class Entity :public Object {
-public:
-	Entity();
-	~Entity();
-
-	bool GetHitTrigger(Entity* target);
-
-private:
-
-	float m_CollisionSize;
 
 };
 

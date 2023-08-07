@@ -130,6 +130,7 @@
   <ItemGroup>
     <ClCompile Include="Buff.cpp" />
     <ClCompile Include="DrawString.cpp" />
+    <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Inventory.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="Fade.cpp" />
@@ -149,6 +150,7 @@
   <ItemGroup>
     <ClInclude Include="Buff.h" />
     <ClInclude Include="DrawString.h" />
+    <ClInclude Include="Entity.h" />
     <ClInclude Include="Inventory.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="Fade.h" />

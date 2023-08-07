@@ -100,7 +100,7 @@ private:
 
 class Potion :public Item {
 public:
-	Potion() :Item(5){}
+	Potion();
 	~Potion() {};
 
 public:
