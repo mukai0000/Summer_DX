@@ -5,6 +5,8 @@
 
 Map* mm;
 
+D3DXVECTOR2 p;
+
 void InitGame()
 {
 	mm = new Map;

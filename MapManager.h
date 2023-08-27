@@ -11,29 +11,39 @@
 
 #define MAP_SIZE 50
 
+typedef struct {
+	float pos;
+	float wide;
+}WIDE_POS;
+
 class Map
 {
 public:
 	Map();
 	~Map();
+
+
 	//基礎
 	void InitMapManager(D3DXVECTOR2* playerPos);
 	void UninitMapManager();
 	void UpdateMapManager();
 	void DrawMapManager();
 
+	bool GetCollider(D3DXVECTOR2* move);
+	bool GetCollider(D3DXVECTOR2* pos, D3DXVECTOR2* move);
+
 	//補助
-	void SetAddXMove(float x) { move.x += x; }			//これは描画に必要なやつ
-	void SetAddYMove(float y) { move.y += y; }
+	WIDE_POS	GetDrawWidePos(D3DXVECTOR2 pos);
+	float		GetDrawHight(float y);
+	float		GetDrawHight(int y);
+	float		GetDrawAngle(float y);
 
 
 private:
 
 	D3DXVECTOR2* m_PlayerPos;			//プレイヤーの場所を取得するために必要なもの
 
-	D3DXVECTOR2 sumple;
-
-	D3DXVECTOR2 move;					//動いた時の座標をそのまま使うと反転しちゃうから　動いた場合と描画の場合を切り離す
+	D3DXVECTOR2 m_CameraCentor;
 
 	D3DXVECTOR2 mouse;
 

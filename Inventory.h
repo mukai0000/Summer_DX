@@ -40,8 +40,8 @@ typedef struct {
 class Inventory
 {
 public:
-	Inventory();
-	~Inventory();
+	Inventory() {};
+	~Inventory() {};
 
 	//////////////
 	// ゲッター //
@@ -49,8 +49,8 @@ public:
 
 	uint8_t	GetUseItemID();			//アイテム使用するボタン押したらこれを呼び出す
 
-	uint8_t GetSarchSlotNum(uint8_t targetID);	//引数のIDのアイテムがどこにあるかを取得する
-	uint8_t GetSarchItemId(uint8_t targetPos);	//引数のスロット番号のアイテムIDを取得する		UI表示に使う
+	uint8_t GetSarchSlotNum(uint8_t targetID) {};	//引数のIDのアイテムがどこにあるかを取得する
+	uint8_t GetSarchItemId(uint8_t targetPos) {};	//引数のスロット番号のアイテムIDを取得する		UI表示に使う
 	
 	//////////////
 	// セッター //
