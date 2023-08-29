@@ -40,6 +40,7 @@ public:
 
 
 private:
+	WIDE_POS	GetMapDrawPos(int y);
 
 	D3DXVECTOR2* m_PlayerPos;			//プレイヤーの場所を取得するために必要なもの
 
