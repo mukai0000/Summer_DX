@@ -189,27 +189,37 @@ void Map::DrawMapManager()
 	float w = SCREEN_WIDTH*0.5f;
 
 	int startY = (m_CameraCentor.y-DRAW_HIGHT) * 0.02f;		//1ﾏｽ50だから0.02で割る
-	int endY = (m_CameraCentor.y+DRAW_HIGHT) * 0.02f;		//1ﾏｽ50だから0.02で割る
+	int endY = ((m_CameraCentor.y+DRAW_UNDER) * 0.02f);		//1ﾏｽ50だから0.02で割る
 	t = { HOLIZON_POS,WIDE_WIDE };
 	b = GetMapDrawPos(startY+1);
+	//b = GetMapDrawPos(m_CameraCentor.y  * 0.02f);
+
+	float T,B;
+	T = 0;
+	B = GetDrawHight(startY + 1);
+
 	
-	for (int i = startY+1; i < endY; i++) {
-		/*if (t>=0 || b >= 0) {
-			if (t < 0)t = 0.0f;
-			float tp = HOLIZON_POS + (HOLIZON_TO_BOTTOM_WIDE * t);
-			float bp = HOLIZON_POS + (HOLIZON_TO_BOTTOM_WIDE * b);
-			DrawSprite_TB_FOUR(&box, &tp, &bp, &z, &w, &z, &w);
+	for (int i = startY; i < endY; i++) {
+		if (T>=0 || B >= 0) {
+			if (T < 0)T = 0.0f;
+			float tp = HOLIZON_POS + (HOLIZON_TO_BOTTOM_WIDE * T);
+			float bp = HOLIZON_POS + (HOLIZON_TO_BOTTOM_WIDE * B);
+			float l, r;
+			l = w;
+			r = SCREEN_WIDTH;
+			DrawSprite_TB_FOUR(&box, &tp, &bp, &l, &r, &l, &r);
 		}
-		if (b > 1)break;*/
-		float lt, rt, lb, rb;
-		int startX=m_CameraCentor.x;
-		int endX=startX+TOP_LEFT_RIGHT;
-		for (int x = 0; x < 10; x++) {
+		int startX = m_CameraCentor.x;
+		int endX = startX + TOP_LEFT_RIGHT;
+		//for (int x = 0; x < 10; x++) {
 			
 			DrawSprite_TB_FOUR(&box, &t.pos, &b.pos, &z, &w, &z, &w);
-		}
+		//}
+
 		t = b;
-		b = GetMapDrawPos(startY + i);
+		b = GetMapDrawPos(i+1);
+		T = B;
+		B = GetDrawHight(i+1);
 	}
 
 	//プレイヤーの描画場所は基本固定
@@ -321,8 +331,9 @@ float Map::GetDrawAngle(float y)
 WIDE_POS Map::GetMapDrawPos(int y)
 {
 	WIDE_POS ret;
-	ret.pos = GetDrawHight(y);
+	float pos = HOLIZON_POS + (GetDrawHight(y) * HOLIZON_TO_BOTTOM_WIDE);
+	ret.pos = pos;
 	ret.wide = GetDrawWidePos(D3DXVECTOR2(0, y * BLOCK_SIZE)).wide;
 
-	return WIDE_POS();
+	return ret;
 }
