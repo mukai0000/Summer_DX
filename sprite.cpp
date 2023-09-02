@@ -776,6 +776,7 @@ void DrawAnimation_LT(TEXTURE_DATA* tex, D3DXVECTOR2* pos, D3DXVECTOR2* size, D3
 
 	int u = target % (int)tex->wide;
 	int v = target / (int)tex->wide;
+	
 
 	// 頂点０番（左上の頂点）
 	vertex[0].Position = D3DXVECTOR3(pos->x, pos->y, 0.0f);

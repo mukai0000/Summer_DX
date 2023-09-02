@@ -28,7 +28,7 @@
 
 Map::Map()
 {
-	
+
 	m_CameraCentor = {
 		BLOCK_SIZE * MAP_SIZE * 0.5f,
 		BLOCK_SIZE * MAP_SIZE * 0.5f
@@ -95,6 +95,7 @@ void Map::DrawMapManager()
 
 	TEXTURE_DATA box = SetTexture("data/TEXTURE/box.png", 1, 1, 1);
 
+	{
 	// ひとまずコメントアウト
 	//プレイヤーのいるY座標を簡易変換？
 	//int sy = (int)m_CameraCentor.y / 50;							//プレイヤーの今いる簡易Y座標
@@ -183,24 +184,32 @@ void Map::DrawMapManager()
 	//	}
 	//	if (numY <= y)numY++;
 	//}
-	
-	WIDE_POS t,b;
-	float z = 0;
-	float w = SCREEN_WIDTH*0.5f;
+	}
 
-	int startY = (m_CameraCentor.y-DRAW_HIGHT) * 0.02f;		//1ﾏｽ50だから0.02で割る
-	int endY = ((m_CameraCentor.y+DRAW_UNDER) * 0.02f);		//1ﾏｽ50だから0.02で割る
+	WIDE_POS t, b;
+	float z = 0;
+	float w = SCREEN_WIDTH * 0.5f;
+
+	int startY = (m_CameraCentor.y - DRAW_HIGHT) * 0.02f;		//1ﾏｽ50だから0.02で割る
+	int endY = ((m_CameraCentor.y + DRAW_UNDER) * 0.02f);		//1ﾏｽ50だから0.02で割る
 	t = { HOLIZON_POS,WIDE_WIDE };
-	b = GetMapDrawPos(startY+1);
+	b = GetMapDrawPos(startY + 1);
 	//b = GetMapDrawPos(m_CameraCentor.y  * 0.02f);
 
-	float T,B;
+	/*float T,B;
 	T = 0;
-	B = GetDrawHight(startY + 1);
+	B = GetDrawHight(startY + 1);*/
 
-	
-	for (int i = startY; i < endY; i++) {
-		if (T>=0 || B >= 0) {
+	//横幅描画用
+	int centorX = m_CameraCentor.x * 0.02f;
+	int endX = centorX + TOP_LEFT_RIGHT * 0.5f;
+	int startX = centorX - endX;
+	float lt, rt, lb, rb, subX;
+	subX = (int)(m_CameraCentor.x + 0.5f) % BLOCK_SIZE * 0.02f;
+
+	for (int i = startY; i <= endY; i++) {
+
+		/*if (T>=0 || B >= 0) {
 			if (T < 0)T = 0.0f;
 			float tp = HOLIZON_POS + (HOLIZON_TO_BOTTOM_WIDE * T);
 			float bp = HOLIZON_POS + (HOLIZON_TO_BOTTOM_WIDE * B);
@@ -208,19 +217,27 @@ void Map::DrawMapManager()
 			l = w;
 			r = SCREEN_WIDTH;
 			DrawSprite_TB_FOUR(&box, &tp, &bp, &l, &r, &l, &r);
-		}
-		int startX = m_CameraCentor.x;
-		int endX = startX + TOP_LEFT_RIGHT;
-		//for (int x = 0; x < 10; x++) {
+		}*/
+
+		for (int x = startX; x <= endX; x++)
+		{
 			
-			DrawSprite_TB_FOUR(&box, &t.pos, &b.pos, &z, &w, &z, &w);
-		//}
+			lt = x * t.wide + SCREEN_WIDTH * 0.5 - (t.wide * subX);
+			rt = x * t.wide + t.wide + SCREEN_WIDTH * 0.5 - (t.wide * subX);
+			lb = x * b.wide + SCREEN_WIDTH * 0.5 - (b.wide * subX);
+			rb = x * b.wide + b.wide + SCREEN_WIDTH * 0.5 - (b.wide * subX);
+			if (i >= 0 && i <= MAP_SIZE && centorX + x >= 0 && centorX + x <= MAP_SIZE) {
+				DrawSprite_TB_FOUR(&box, &t.pos, &b.pos, &lt, &rt, &lb, &rb);
+			}
+		}
 
 		t = b;
-		b = GetMapDrawPos(i+1);
-		T = B;
-		B = GetDrawHight(i+1);
+		b = GetMapDrawPos(i + 2);
+		/*T = B;
+		B = GetDrawHight(i+1);*/
 	}
+
+
 
 	//プレイヤーの描画場所は基本固定
 	D3DXVECTOR2 pos = { SCREEN_WIDTH * 0.5f,SCREEN_HEIGHT * 0.7f };
@@ -285,7 +302,7 @@ WIDE_POS Map::GetDrawWidePos(D3DXVECTOR2 pos)
 	WIDE_POS ret = { 0,0 };
 
 	float angle = GetDrawAngle(pos.y);				//角度取得
-	if (angle < 0 || angle>HULF_PI)return ret;		//画面外だったら
+	if (angle < 0 /*|| angle>HULF_PI*/)return ret;		//画面外だったら
 
 	ret.wide = WIDE_WIDE * (1 + (sinf(angle) * 0.5f));
 
@@ -308,9 +325,9 @@ float Map::GetDrawHight(int y)
 {
 	float posY = y * BLOCK_SIZE;
 	float angle = GetDrawAngle(posY);		//角度を取得
-	if (angle <0)return -1* (1.0f - cos(angle));			//範囲外だったら終了
+	if (angle < 0)return -1 * (1.0f - cos(angle));			//範囲外だったら終了
 
-	return 1.0f-cos(angle);
+	return 1.0f - cos(angle);
 }
 
 float Map::GetDrawAngle(float y)
@@ -319,10 +336,10 @@ float Map::GetDrawAngle(float y)
 	//if (y< m_CameraCentor.y - DRAW_HIGHT || y>m_CameraCentor.y + DRAW_UNDER)return -1;
 
 	//小数点以下を四捨五入
-	int pos = (int)(y+0.5f) - (m_CameraCentor.y - DRAW_HIGHT);
+	int pos = (int)(y + 0.5f) - (m_CameraCentor.y - DRAW_HIGHT);
 
 	//地平線から画面したまでの割合
-	float ret = pos / (DRAW_HIGHT+DRAW_UNDER);
+	float ret = pos / (DRAW_HIGHT + DRAW_UNDER);
 
 
 	return ret * HULF_PI;

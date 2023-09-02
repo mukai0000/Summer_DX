@@ -47,3 +47,6 @@ void DrawAnimation(TEXTURE_DATA *tex, D3DXVECTOR2 *pos, D3DXVECTOR2 *size, int *
 void DrawAnimation(TEXTURE_DATA *tex, D3DXVECTOR2 *pos, D3DXVECTOR2 *size, D3DXCOLOR col,int *target);
 void DrawAnimation_LT(TEXTURE_DATA *tex, D3DXVECTOR2 *pos, D3DXVECTOR2 *size, int *target);
 void DrawAnimation_LT(TEXTURE_DATA *tex, D3DXVECTOR2 *pos, D3DXVECTOR2 *size, D3DXCOLOR col,int target);
+void DrawAnimation_LT(TEXTURE_DATA *tex, D3DXVECTOR2 *pos1, D3DXVECTOR2 *pos2, D3DXVECTOR2 *pos3, D3DXVECTOR2 *pos4, D3DXCOLOR col,int target);
+
+
