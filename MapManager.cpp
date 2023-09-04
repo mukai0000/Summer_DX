@@ -29,9 +29,9 @@
 Map::Map()
 {
 
-	m_CameraCentor = {
-		BLOCK_SIZE * MAP_SIZE * 0.5f,
-		BLOCK_SIZE * MAP_SIZE * 0.5f
+	m_CameraCentor = {			  
+		BLOCK_SIZE * MAP_SIZE * 0.9f,
+		BLOCK_SIZE * MAP_SIZE * 0.9f
 	};
 	mouse = {
 		SCREEN_WIDTH * 0.2f,
@@ -77,6 +77,23 @@ void Map::UpdateMapManager()
 	else if (GetKeyboardPress(DIK_S) && !GetKeyboardPress(DIK_LSHIFT)) {
 		m_CameraCentor.y += speed;
 	}
+
+	//âÊñ äOÇ…èoÇ»Ç¢óp
+	//X
+	if (m_CameraCentor.x <= BLOCK_SIZE * 8) {
+		m_CameraCentor.x = BLOCK_SIZE * 8;
+	}
+	else if (m_CameraCentor.x >= MAP_SIZE * BLOCK_SIZE - BLOCK_SIZE * 8) {
+		m_CameraCentor.x = MAP_SIZE * BLOCK_SIZE - BLOCK_SIZE * 8;
+	}
+	//Y
+	if (m_CameraCentor.y <= BLOCK_SIZE * 9) {
+		m_CameraCentor.y = BLOCK_SIZE * 9;
+	}
+	else if (m_CameraCentor.y >= MAP_SIZE * BLOCK_SIZE - BLOCK_SIZE * 2) {
+		m_CameraCentor.y = MAP_SIZE * BLOCK_SIZE - BLOCK_SIZE * 2;
+	}
+
 
 	if (GetKeyboardTrigger(DIK_TAB)) {
 		isMouse = !isMouse;
@@ -207,7 +224,7 @@ void Map::DrawMapManager()
 	float lt, rt, lb, rb, subX;
 	subX = (int)(m_CameraCentor.x + 0.5f) % BLOCK_SIZE * 0.02f;
 
-	for (int i = startY; i <= endY; i++) {
+	for (int y = startY; y <= endY; y++) {
 
 		/*if (T>=0 || B >= 0) {
 			if (T < 0)T = 0.0f;
@@ -226,13 +243,13 @@ void Map::DrawMapManager()
 			rt = x * t.wide + t.wide + SCREEN_WIDTH * 0.5 - (t.wide * subX);
 			lb = x * b.wide + SCREEN_WIDTH * 0.5 - (b.wide * subX);
 			rb = x * b.wide + b.wide + SCREEN_WIDTH * 0.5 - (b.wide * subX);
-			if (i >= 0 && i <= MAP_SIZE && centorX + x >= 0 && centorX + x <= MAP_SIZE) {
+			if (y >= 0 && y <= MAP_SIZE && centorX + x >= 0 && centorX + x < MAP_SIZE) {
 				DrawSprite_TB_FOUR(&box, &t.pos, &b.pos, &lt, &rt, &lb, &rb);
 			}
 		}
 
 		t = b;
-		b = GetMapDrawPos(i + 2);
+		b = GetMapDrawPos(y + 2);
 		/*T = B;
 		B = GetDrawHight(i+1);*/
 	}
