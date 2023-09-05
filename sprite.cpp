@@ -759,10 +759,6 @@ void DrawNumberSumple(D3DXVECTOR2 pos, D3DXVECTOR2 size, int target)
 	DrawSprite(g_NumberSumple, pos.x + size.x * 2.1f, pos.y, size.x * 0.7f, size.y, 0.1f * num, 0, 0.1f, 1);
 }
 
-void DrawAnimation(TEXTURE_DATA* tex, D3DXVECTOR2* pos, D3DXVECTOR2* size, int* target)
-{
-
-}
 
 void DrawAnimation_LT(TEXTURE_DATA* tex, D3DXVECTOR2* pos, D3DXVECTOR2* size, D3DXCOLOR col, int target)
 {

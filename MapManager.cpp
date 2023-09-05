@@ -112,96 +112,6 @@ void Map::DrawMapManager()
 
 	TEXTURE_DATA box = SetTexture("data/TEXTURE/box.png", 1, 1, 1);
 
-	{
-	// ひとまずコメントアウト
-	//プレイヤーのいるY座標を簡易変換？
-	//int sy = (int)m_CameraCentor.y / 50;							//プレイヤーの今いる簡易Y座標
-	//float subY = (float)((int)m_CameraCentor.y % 50) / 50.0f;			//プレイヤーのY座標の差分	子の差分のぶんだけマップの座標の描画をずらして移動しているように見せる　これに
-
-	//float hrizon = SCREEN_HEIGHT * 0.2f;					//マップ描画の地平線　
-	//float under = SCREEN_HEIGHT - hrizon;					//地平線からプレイヤー側の画面外までの差分
-
-
-	////地平線がビコビコするのはここで小数点以下切り捨てにしてしまってる部分を拾ってないから?
-
-	////プレイヤーのいるX座標を簡易変換
-	//int sx = (int)m_CameraCentor.x / 50;
-	//float subX = (float)((int)m_CameraCentor.x % 50) / 50.0f;		//プレイヤーのX座標の差分
-
-
-	//int numY = 0;			//地平線から何個目のやつかのYバージョン
-	//float hWideT, hWideB, lineT, lineB, subAngle, topAngle, bottomAngle;
-
-	//int startY = (int)(sy - HORIZON_TO_PLAYER);
-	//int endY = (int)(sy + PLAYER_TO_UNDER);
-
-	//for (int y = startY; y < endY; y++) {		//描画する数を制限
-
-	//	subAngle = HULF_PI * DRAW_ANGLE_Y * subY;								//プレイヤーの移動によって発生した角度の端数？
-
-	//	topAngle = HULF_PI * DRAW_ANGLE_Y * numY + subAngle;					//描画のチップのうえ座標の角度
-	//	bottomAngle = HULF_PI * DRAW_ANGLE_Y * (numY + 1) + subAngle;			//描画のチップの下の座標の角度
-
-	//	hWideT = 1 - cosf(topAngle);
-	//	hWideB = 1 - cosf(bottomAngle);
-
-	//	lineT = hrizon + under * hWideT;
-	//	lineB = hrizon + under * hWideB;
-
-	//	int numX = (int)(-TOP_LEFT_RIGHT * 0.5f);				//プレイヤーから何個ずれたやつか
-
-	//	float wideT, wideB;								//□の上と下の辺の長さ
-	//	float lt, rt, lb, rb;							///左上右上左下右下のX座標
-
-	//	int startX = (int)(sx - TOP_LEFT_RIGHT * 0.5f);
-	//	int endX = (int)(sx + TOP_LEFT_RIGHT * 0.5f);
-
-	//	for (int x = startX; x < endX; x++) {
-	//		//水平線が２　プレイヤーのとこより下が３にする予定
-
-	//		D3DXCOLOR col = { //緑をだんだんこく
-	//			1.0f - 0.05f * x,
-	//			1.0f - 0.05f * x,
-	//			1.0f - 0.05f * x,
-	//			//1.0f - 0.05f * y,
-	//			//1.0f - 0.05f * y,
-	//			//1.0f - 0.05f * y,
-	//			1.0f
-	//		};
-
-	//		if (topAngle < 0)topAngle = 0;
-
-	//		wideT = (float)(WIDE_WIDE + WIDE_WIDE * (sinf(topAngle)));		//この数字をかける
-	//		wideB = (float)(WIDE_WIDE + WIDE_WIDE * (sinf(bottomAngle)));
-
-	//		lt = SCREEN_WIDTH * 0.5f + wideT * numX;
-	//		rt = SCREEN_WIDTH * 0.5f + wideT * (numX + 1);
-	//		lb = SCREEN_WIDTH * 0.5f + wideB * numX;
-	//		rb = SCREEN_WIDTH * 0.5f + wideB * (numX + 1);
-	//		
-	//		if (numY == 0) {
-	//			//DrawBoxColor_TB_FOUR(&hrizon, &lineB, &lt, &rt, &lb, &rb, &col);
-	//			//DrawSprite_TB_FOUR(&box, &hrizon, &lineT, &lb, &rb, &lt, &rt);
-	//			DrawSprite_TB_FOUR(&box, &hrizon, &lineT, &lb, &rb, &lb, &rb);
-	//		}
-
-	//		//DrawBoxColor_TB_FOUR(&lineT, &lineB, &lt, &rt, &lb, &rb, &col);
-
-	//		else DrawSprite_TB_FOUR(&box, &lineT, &lineB, &lt, &rt, &lb, &rb);
-	//		if (numY == 0) {
-
-	//			//DrawNumberSumple(D3DXVECTOR2(0, 200), D3DXVECTOR2(50, 50), lt - rt);
-	//			//DrawNumberSumple(D3DXVECTOR2(300, 200), D3DXVECTOR2(50, 50), lineT);
-	//			//DrawNumberSumple(D3DXVECTOR2(500, 200), D3DXVECTOR2(50, 50), hrizon);
-	//			//DrawNumberSumple(D3DXVECTOR2(300, 100), D3DXVECTOR2(50, 50), numX);
-	//		}
-
-
-	//		numX++;
-	//	}
-	//	if (numY <= y)numY++;
-	//}
-	}
 
 	WIDE_POS t, b;
 	float z = 0;
@@ -211,11 +121,6 @@ void Map::DrawMapManager()
 	int endY = ((m_CameraCentor.y + DRAW_UNDER) * 0.02f);		//1ﾏｽ50だから0.02で割る
 	t = { HOLIZON_POS,WIDE_WIDE };
 	b = GetMapDrawPos(startY + 1);
-	//b = GetMapDrawPos(m_CameraCentor.y  * 0.02f);
-
-	/*float T,B;
-	T = 0;
-	B = GetDrawHight(startY + 1);*/
 
 	//横幅描画用
 	int centorX = m_CameraCentor.x * 0.02f;
@@ -225,33 +130,21 @@ void Map::DrawMapManager()
 	subX = (int)(m_CameraCentor.x + 0.5f) % BLOCK_SIZE * 0.02f;
 
 	for (int y = startY; y <= endY; y++) {
+		for (int x = startX; x <= endX; x++) {
 
-		/*if (T>=0 || B >= 0) {
-			if (T < 0)T = 0.0f;
-			float tp = HOLIZON_POS + (HOLIZON_TO_BOTTOM_WIDE * T);
-			float bp = HOLIZON_POS + (HOLIZON_TO_BOTTOM_WIDE * B);
-			float l, r;
-			l = w;
-			r = SCREEN_WIDTH;
-			DrawSprite_TB_FOUR(&box, &tp, &bp, &l, &r, &l, &r);
-		}*/
-
-		for (int x = startX; x <= endX; x++)
-		{
-			
 			lt = x * t.wide + SCREEN_WIDTH * 0.5 - (t.wide * subX);
 			rt = x * t.wide + t.wide + SCREEN_WIDTH * 0.5 - (t.wide * subX);
 			lb = x * b.wide + SCREEN_WIDTH * 0.5 - (b.wide * subX);
 			rb = x * b.wide + b.wide + SCREEN_WIDTH * 0.5 - (b.wide * subX);
+
 			if (y >= 0 && y <= MAP_SIZE && centorX + x >= 0 && centorX + x < MAP_SIZE) {
 				DrawSprite_TB_FOUR(&box, &t.pos, &b.pos, &lt, &rt, &lb, &rb);
 			}
+
 		}
 
 		t = b;
 		b = GetMapDrawPos(y + 2);
-		/*T = B;
-		B = GetDrawHight(i+1);*/
 	}
 
 
@@ -265,26 +158,12 @@ void Map::DrawMapManager()
 	mouse.x += GetMouseX();
 	mouse.y += GetMouseY();
 
-	//DrawSpriteLeftTop(m_MouseTex, mouse.x, mouse.y, 30, 30, 0, 0, 1, 1);
 	DrawSpriteLeftTop(m_MouseTex, GetMousePosition().x, GetMousePosition().y, 30, 30, 0, 0, 1, 1);
 	//ShowCursor(true);
 	ShowCursor(false);
 
 
-
 	DrawNumberSumple(D3DXVECTOR2(100, 100), D3DXVECTOR2(50, 50), (int)(m_CameraCentor.y));
-
-
-
-	/*MyString* ms = new MyString("World Wide Pokemon Project");
-
-	D3DXVECTOR2 sp = { 0,0, };
-	D3DXVECTOR2 ss = { 50,50, };
-	D3DXCOLOR sc = { 1,1,1,1 };
-
-	ms->DrawString(sp,ss,sc);
-
-	delete ms;*/
 }
 
 bool Map::GetCollider(D3DXVECTOR2* move)
