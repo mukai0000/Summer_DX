@@ -56,4 +56,7 @@ private:
 	unsigned int m_BGTex;
 
 	bool isMouse;
+
+	//’è”
+	
 };

@@ -42,23 +42,15 @@ typedef struct {
 }UI_DATA;
 
 //ä÷êî
-UI_DATA SetUI_DATA(string texName, int w, int h, int a, D3DXVECTOR2 pos, D3DXVECTOR2 size, D3DXCOLOR col, bool act) {
-	UI_DATA ret;
-	ret.tex = SetTexture(texName, w, h, a);
-	ret.pos = pos;
-	ret.size = size;
-	ret.col = col;
-	ret.active = act;
-	return ret;
-}
+UI_DATA SetUI_DATA(string texName, int w, int h, int a, D3DXVECTOR2 pos, D3DXVECTOR2 size, D3DXCOLOR col, bool act, float num);
 
 class UI {
 public:
-	UI(string texName, int w, int h, int a, D3DXVECTOR2 pos, D3DXVECTOR2 size, D3DXCOLOR col, bool act);
+	UI(string texName, int w, int h, int a, D3DXVECTOR2 pos, D3DXVECTOR2 size, D3DXCOLOR col, bool act,float num);
 	UI(UI_DATA uiData) :m_Data(uiData) {};
 	~UI() {};
 
-	void virtual Update();
+	void virtual Update() {};
 
 	void SetActive(bool b) { m_Data.active = b; }
 	bool GetActive() { return m_Data.active; }
@@ -74,7 +66,7 @@ protected:
 
 class GageBar : public UI {
 public:
-	GageBar(string texName, int w, int h, int a, D3DXVECTOR2 pos, D3DXVECTOR2 size, D3DXCOLOR col, bool act, FILL_VEC vec) :UI(texName, w, h, a, pos, size, col, act), m_Fill(vec) {};
+	GageBar(string texName, int w, int h, int a, D3DXVECTOR2 pos, D3DXVECTOR2 size, D3DXCOLOR col, bool act,float num, FILL_VEC vec);
 	GageBar(UI_DATA uiData, FILL_VEC vec) :UI(uiData), m_Fill(vec) {};
 	~GageBar() {};
 
@@ -93,7 +85,7 @@ private:
 
 class Button :public UI {
 public:
-	Button(string texName, int w, int h, int a, D3DXVECTOR2 pos, D3DXVECTOR2 size, D3DXCOLOR col, bool act, bool h) :UI(texName, w, h, a, pos, size, col, act),m_IsHit(h) {};
+	Button(string texName, int w, int h, int a, D3DXVECTOR2 pos, D3DXVECTOR2 size, D3DXCOLOR col, bool act, bool b) :UI(texName, w, h, a, pos, size, col, act,0),m_IsHit(b) {};
 	Button(UI_DATA uiData, bool h) :UI(uiData), m_IsHit(h) {};
 	~Button() {};
 

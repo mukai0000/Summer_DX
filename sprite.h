@@ -37,6 +37,7 @@ void DrawBoxColor_TB_FOUR(float* top, float* bottom, float* lt, float* rt, float
 
 void DrawSprite(TEXTURE_DATA* tex, D3DXVECTOR2* pos, float* radius);
 void DrawSprite(TEXTURE_DATA* tex, D3DXVECTOR2* pos, D3DXVECTOR2* size);
+void DrawSprite_LT(TEXTURE_DATA* tex, D3DXVECTOR2* pos, D3DXVECTOR2* size,D3DXVECTOR4 *uv);
 void DrawSprite_TB_FOUR(TEXTURE_DATA* tex,float* top, float* bottom, float* lt, float* rt, float* lb, float* rb);
 
 void DrawBox_LTRB(D3DXVECTOR2* lt, D3DXVECTOR2* rb, D3DXCOLOR* color);
