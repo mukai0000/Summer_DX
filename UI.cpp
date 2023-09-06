@@ -73,7 +73,7 @@ void GageBar::Draw()
 			p.y += s.y * uv.y;
 			s.y *= m_Data.num;
 
-			DrawSprite_LT(&m_Data.tex, &p, &s, &uv);
+			DrawSprite_LT(&m_Data.tex, &p, &s,&m_Data.col, &uv);
 			break;
 
 		case FILL_VEC::FILL_LEFT:
@@ -84,7 +84,7 @@ void GageBar::Draw()
 			uv.z = m_Data.num;
 			s.x *= m_Data.num;
 
-			DrawSprite_LT(&m_Data.tex, &p, &s, &uv);
+			DrawSprite_LT(&m_Data.tex, &p, &s, &m_Data.col, &uv);
 			break;
 		}
 	}
@@ -104,11 +104,15 @@ void Button::Update()
 
 void Button::Draw()
 {
+	D3DXVECTOR4 uv = { 0.0f,0.0f, 1.0f,1.0f };
+	D3DXCOLOR col;
 	if (m_IsHit) {
-
+		col = m_Data.col * 0.9f;
+		DrawSprite_LT(&m_Data.tex, &m_Data.pos, &m_Data.size, &col, &uv);
 	}
 	else {
-
+		col = m_Data.col;
+		DrawSprite_LT(&m_Data.tex, &m_Data.pos, &m_Data.size, &m_Data.col, &uv);
 	}
 }
 
