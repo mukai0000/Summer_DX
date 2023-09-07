@@ -20,7 +20,7 @@ class Map
 {
 public:
 	Map();
-	~Map();
+	~Map() {};
 
 
 	//Šî‘b

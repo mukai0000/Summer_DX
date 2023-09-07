@@ -24,8 +24,8 @@
 
 //—ñ‹“‘Ì
 typedef enum {
-	FILL_UP,		
-	FILL_DOWN,		
+	FILL_UP,
+	FILL_DOWN,
 	FILL_LEFT,		//1<-0
 	FILL_RIGHT		//0->1
 }FILL_VEC;
@@ -46,7 +46,7 @@ UI_DATA SetUI_DATA(string texName, int w, int h, int a, D3DXVECTOR2 pos, D3DXVEC
 
 class UI {
 public:
-	UI(string texName, int w, int h, int a, D3DXVECTOR2 pos, D3DXVECTOR2 size, D3DXCOLOR col, bool act,float num);
+	UI(string texName, int w, int h, int a, D3DXVECTOR2 pos, D3DXVECTOR2 size, D3DXCOLOR col, bool act, float num);
 	UI(UI_DATA uiData) :m_Data(uiData) {};
 	~UI() {};
 
@@ -66,7 +66,7 @@ protected:
 
 class GageBar : public UI {
 public:
-	GageBar(string texName, int w, int h, int a, D3DXVECTOR2 pos, D3DXVECTOR2 size, D3DXCOLOR col, bool act,float num, FILL_VEC vec);
+	GageBar(string texName, int w, int h, int a, D3DXVECTOR2 pos, D3DXVECTOR2 size, D3DXCOLOR col, bool act, float num, FILL_VEC vec);
 	GageBar(UI_DATA uiData, FILL_VEC vec) :UI(uiData), m_Fill(vec) {};
 	~GageBar() {};
 
@@ -85,13 +85,13 @@ private:
 
 class Button :public UI {
 public:
-	Button(string texName, int w, int h, int a, D3DXVECTOR2 pos, D3DXVECTOR2 size, D3DXCOLOR col, bool act, bool b) :UI(texName, w, h, a, pos, size, col, act,0),m_IsHit(b) {};
-	Button(UI_DATA uiData, bool h) :UI(uiData), m_IsHit(h) {};
+	Button(string texName, int w, int h, int a, D3DXVECTOR2 pos, D3DXVECTOR2 size, D3DXCOLOR col, bool act) :UI(texName, w, h, a, pos, size, col, act, 0), m_IsHit(false) {};
+	Button(UI_DATA uiData) :UI(uiData), m_IsHit(false) {};
 	~Button() {};
 
 	void Update()override;
 
-	bool GetClick() { return (m_IsHit && IsMouseLeftTriggered()) ? true : false; };
+	bool GetClick() { return (m_Data.active && m_IsHit && IsMouseLeftTriggered()) ? true : false; };
 
 	void Draw()override;
 private:

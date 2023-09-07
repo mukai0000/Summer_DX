@@ -105,13 +105,12 @@ void Button::Update()
 void Button::Draw()
 {
 	D3DXVECTOR4 uv = { 0.0f,0.0f, 1.0f,1.0f };
-	D3DXCOLOR col;
+	D3DXCOLOR col = m_Data.col;
 	if (m_IsHit) {
-		col = m_Data.col * 0.9f;
+		col = {0.9f,0.9f,0.9f,1.0f};
 		DrawSprite_LT(&m_Data.tex, &m_Data.pos, &m_Data.size, &col, &uv);
 	}
 	else {
-		col = m_Data.col;
 		DrawSprite_LT(&m_Data.tex, &m_Data.pos, &m_Data.size, &m_Data.col, &uv);
 	}
 }
