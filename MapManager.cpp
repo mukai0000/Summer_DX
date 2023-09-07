@@ -2,6 +2,7 @@
 #include "input.h"
 #include "sprite.h"
 #include "main.h"
+#include "game.h"
 
 #include "myString.h"
 
@@ -28,6 +29,7 @@
 
 Map::Map()
 {
+	SetTarget(D3DXVECTOR2(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.7));
 
 	m_CameraCentor = {			  
 		BLOCK_SIZE * MAP_SIZE * 0.9f,
@@ -41,19 +43,38 @@ Map::Map()
 	m_MouseTex = LoadTexture((char*)"data/TEXTURE/MousePoint.png");
 	m_BGTex = LoadTexture((char*)"data/TEXTURE/sky.png");
 
-	isMouse = !true;
+	m_PlayerBullet = new BULLET[PLAYER_BULLET];
+	m_EnemyBullet = new BULLET[ENEMY_BULLET];
+
+	m_Time - MAX_TIME;
+
+	m_PlayerData.maxHp = 100;
+	m_PlayerData.hp = 100;
+	m_PlayerData.maxEnergy = 200;
+	m_PlayerData.energy = 0;
+	m_PlayerData.shotTime = m_PlayerData.coolTime;
+
+
+	m_Mode = MODE::MODE_MOVE;
+	for (int i = 0; i < PLAYER_BULLET; i++) {
+		m_PlayerBullet[i].isActive = false;
+	}
+
+	for (int i = 0; i < ENEMY_BULLET; i++) {
+		m_EnemyBullet[i].isActive = false;
+	}
 }
 
-void Map::InitMapManager(D3DXVECTOR2* playerPos)
+void Map::Init(D3DXVECTOR2* playerPos)
 {
 	m_PlayerPos = playerPos;
 }
 
-void Map::UninitMapManager()
+void Map::Uninit()
 {
 }
 
-void Map::UpdateMapManager()
+void Map::Update()
 {
 	int speed = 1;
 	if (GetKeyboardPress(DIK_A)) {
@@ -63,48 +84,31 @@ void Map::UpdateMapManager()
 		m_CameraCentor.x += speed;
 	}
 
-	if (GetKeyboardTrigger(DIK_W) && GetKeyboardPress(DIK_LSHIFT)) {
-		m_CameraCentor.y -= speed;
-	}
-	else if (GetKeyboardPress(DIK_W) && !GetKeyboardPress(DIK_LSHIFT)) {
-		m_CameraCentor.y -= speed;
-		//if (sumple.y > 450)
-	}
-
-	if (GetKeyboardTrigger(DIK_S) && GetKeyboardPress(DIK_LSHIFT)) {
-		m_CameraCentor.y += speed;
-	}
-	else if (GetKeyboardPress(DIK_S) && !GetKeyboardPress(DIK_LSHIFT)) {
-		m_CameraCentor.y += speed;
-	}
 
 	//画面外に出ない用
 	//X
-	if (m_CameraCentor.x <= BLOCK_SIZE * 8) {
-		m_CameraCentor.x = BLOCK_SIZE * 8;
-	}
-	else if (m_CameraCentor.x >= MAP_SIZE * BLOCK_SIZE - BLOCK_SIZE * 8) {
-		m_CameraCentor.x = MAP_SIZE * BLOCK_SIZE - BLOCK_SIZE * 8;
-	}
-	//Y
-	if (m_CameraCentor.y <= BLOCK_SIZE * 9) {
-		m_CameraCentor.y = BLOCK_SIZE * 9;
-	}
-	else if (m_CameraCentor.y >= MAP_SIZE * BLOCK_SIZE - BLOCK_SIZE * 2) {
-		m_CameraCentor.y = MAP_SIZE * BLOCK_SIZE - BLOCK_SIZE * 2;
-	}
+	//if (m_CameraCentor.x <= BLOCK_SIZE * 8) {
+	//	m_CameraCentor.x = BLOCK_SIZE * 8;
+	//}
+	//else if (m_CameraCentor.x >= MAP_SIZE * BLOCK_SIZE - BLOCK_SIZE * 8) {
+	//	m_CameraCentor.x = MAP_SIZE * BLOCK_SIZE - BLOCK_SIZE * 8;
+	//}
+	////Y
+	//if (m_CameraCentor.y <= BLOCK_SIZE * 9) {
+	//	m_CameraCentor.y = BLOCK_SIZE * 9;
+	//}
+	//else if (m_CameraCentor.y >= MAP_SIZE * BLOCK_SIZE - BLOCK_SIZE * 2) {
+	//	m_CameraCentor.y = MAP_SIZE * BLOCK_SIZE - BLOCK_SIZE * 2;
+	//}
 
 
-	if (GetKeyboardTrigger(DIK_TAB)) {
-		isMouse = !isMouse;
-	}
-
-	if (isMouse) {
-		SetCursorPos(800, 500);
-	}
 }
 
-void Map::DrawMapManager()
+void Map::Update_Move()
+{
+}
+
+void Map::Draw()
 {
 	//ソラ
 	DrawSpriteLeftTop(m_BGTex, 0, -500, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 1, 1);
@@ -239,6 +243,22 @@ float Map::GetDrawAngle(float y)
 
 
 	return ret * HULF_PI;
+}
+
+void Map::SetPlayerShot(D3DXVECTOR2 pos)
+{
+	if (m_PlayerData.energy >= USE_ENERGY && m_PlayerData.shotTime <= 0) {
+		for (int i = 0; i < PLAYER_BULLET; i++) {
+			if (m_PlayerBullet[i].isActive) {
+				m_PlayerBullet[i].isActive = true;
+				m_PlayerBullet[i].pos = pos;
+				m_PlayerBullet[i].vel = D3DXVECTOR2(0, -5);
+				m_PlayerData.energy -= USE_ENERGY;
+				m_PlayerData.shotTime = m_PlayerData.coolTime;				
+				break;
+			}
+		}
+	}
 }
 
 WIDE_POS Map::GetMapDrawPos(int y)

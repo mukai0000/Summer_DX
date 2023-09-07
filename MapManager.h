@@ -16,6 +16,32 @@ typedef struct {
 	float wide;
 }WIDE_POS;
 
+typedef struct {
+	D3DXVECTOR2 pos;
+	D3DXVECTOR2 vel;
+	bool isActive;
+}BULLET;
+
+typedef enum {
+	MODE_MOVE,
+	MODE_SHOT,
+	MODE_PLAY
+}MODE;
+
+typedef struct {
+	float hp;
+	float maxHp;
+	float energy;
+	float maxEnergy;
+	int shotTime;
+	int coolTime;
+}PLAYER_DATA;
+
+typedef struct {
+	bool isLive;
+
+}ENEMY_DATA;
+
 class Map
 {
 public:
@@ -24,10 +50,16 @@ public:
 
 
 	//äÓëb
-	void InitMapManager(D3DXVECTOR2* playerPos);
-	void UninitMapManager();
-	void UpdateMapManager();
-	void DrawMapManager();
+	void Init(D3DXVECTOR2* playerPos);
+	void Uninit();
+	void Update();
+	void Update_Move();
+	void Update_Shot();
+	void Update_Play();
+	void Draw();
+	void Draw_Move();
+	void Draw_Shot();
+	void Draw_Play();
 
 	bool GetCollider(D3DXVECTOR2* move);
 	bool GetCollider(D3DXVECTOR2* pos, D3DXVECTOR2* move);
@@ -37,6 +69,12 @@ public:
 	float		GetDrawHight(float y);
 	float		GetDrawHight(int y);
 	float		GetDrawAngle(float y);
+
+
+	//íeî≠éÀ
+	void		SetPlayerShot(D3DXVECTOR2 pos);
+
+	void		SetEnemyShot(D3DXVECTOR2 pos);
 
 
 private:
@@ -55,7 +93,20 @@ private:
 
 	unsigned int m_BGTex;
 
-	bool isMouse;
+	const int PLAYER_BULLET = 10;
+	const int ENEMY_BULLET = 20;
+	BULLET* m_PlayerBullet;
+	BULLET* m_EnemyBullet;
+
+	PLAYER_DATA m_PlayerData;
+	const int USE_ENERGY = 30;
+
+	const int MAX_TIME = 1800;
+	int m_Time;
+
+	MODE m_Mode;
+
+	int m_Score;
 
 	//íËêî
 	

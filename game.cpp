@@ -66,7 +66,7 @@ void UpdateGame()
 
 	case SCENE_GAME:
 		if (mm != nullptr) {
-			mm->UpdateMapManager();
+			mm->Update();
 		}
 		break;
 
@@ -88,7 +88,7 @@ void DrawGame()
 
 	case SCENE_GAME:
 		if (mm != nullptr) {
-			mm->DrawMapManager();
+			mm->Draw();
 		}
 		break;
 	}
@@ -138,6 +138,7 @@ void UpdateFade()
 		if (g_Time < 0) {
 			g_Fade = FADE_IN;
 			g_Time = 60;
+			ChangeScene(g_NextScene);
 		}
 		else {
 			g_Time--;
@@ -205,5 +206,18 @@ void SetTarget(D3DXVECTOR2 target)
 
 void ChangeScene(SCENE next)
 {
-	
+	UninitGame();
+
+	g_NowScene = next;
+
+	switch (g_NowScene) {
+	case SCENE_TITLE:
+		title = new Title();
+		break;
+
+	case SCENE_GAME:
+		mm = new Map;
+		break;
+
+	}
 }
