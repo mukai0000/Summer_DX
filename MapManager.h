@@ -7,6 +7,7 @@
 #ifndef MAIN_H
 #define MAIN_H
 #include "main.h"
+#include "texture.h"
 #endif // !MAIN_H
 
 #define MAP_SIZE 50
@@ -76,6 +77,8 @@ public:
 
 	void		SetEnemyShot(D3DXVECTOR2 pos);
 
+private:
+	void InitiarizeMap();
 
 private:
 	WIDE_POS	GetMapDrawPos(int y);
@@ -89,9 +92,13 @@ private:
 	char m_Map[MAP_SIZE][MAP_SIZE];
 	float subX, subY;
 	
+	//‰æ‘œ
 	unsigned int m_MouseTex;
 
 	unsigned int m_BGTex;
+
+	TEXTURE_DATA m_MapTex;
+	//‰æ‘œ
 
 	const int PLAYER_BULLET = 10;
 	const int ENEMY_BULLET = 20;
