@@ -76,30 +76,37 @@ void Map::Uninit()
 
 void Map::Update()
 {
-	int speed = 1;
+
+	int speed = 10;
 	if (GetKeyboardPress(DIK_A)) {
 		m_CameraCentor.x -= speed;
 	}
 	if (GetKeyboardPress(DIK_D)) {
 		m_CameraCentor.x += speed;
 	}
+	if (GetKeyboardPress(DIK_W)) {
+		m_CameraCentor.y -= speed;
+	}
+	if (GetKeyboardPress(DIK_S)) {
+		m_CameraCentor.y += speed;
+	}
 
 
 	//âÊñ äOÇ…èoÇ»Ç¢óp
 	//X
-	//if (m_CameraCentor.x <= BLOCK_SIZE * 8) {
-	//	m_CameraCentor.x = BLOCK_SIZE * 8;
-	//}
-	//else if (m_CameraCentor.x >= MAP_SIZE * BLOCK_SIZE - BLOCK_SIZE * 8) {
-	//	m_CameraCentor.x = MAP_SIZE * BLOCK_SIZE - BLOCK_SIZE * 8;
-	//}
-	////Y
-	//if (m_CameraCentor.y <= BLOCK_SIZE * 9) {
-	//	m_CameraCentor.y = BLOCK_SIZE * 9;
-	//}
-	//else if (m_CameraCentor.y >= MAP_SIZE * BLOCK_SIZE - BLOCK_SIZE * 2) {
-	//	m_CameraCentor.y = MAP_SIZE * BLOCK_SIZE - BLOCK_SIZE * 2;
-	//}
+	if (m_CameraCentor.x <= BLOCK_SIZE * 8) {
+		m_CameraCentor.x = BLOCK_SIZE * 8;
+	}
+	else if (m_CameraCentor.x >= MAP_SIZE * BLOCK_SIZE - BLOCK_SIZE * 8) {
+		m_CameraCentor.x = MAP_SIZE * BLOCK_SIZE - BLOCK_SIZE * 8;
+	}
+	//Y
+	if (m_CameraCentor.y <= BLOCK_SIZE * 9) {
+		m_CameraCentor.y = BLOCK_SIZE * 9;
+	}
+	else if (m_CameraCentor.y >= MAP_SIZE * BLOCK_SIZE - BLOCK_SIZE * 2) {
+		m_CameraCentor.y = MAP_SIZE * BLOCK_SIZE - BLOCK_SIZE * 2;
+	}
 
 
 }

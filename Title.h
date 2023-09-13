@@ -19,7 +19,6 @@ public:
 private:
 	Button*		m_Button;
 	MyString*	m_String;
-	MyString*	m_Title;
 
 	TEXTURE_DATA m_BG;
 };
