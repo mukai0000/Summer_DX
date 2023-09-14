@@ -126,7 +126,7 @@ void UpdateFade()
 		}
 		break;
 	case FADE_IN:
-		if (g_Time < 0) {
+		if (g_Time <= 0) {
 			g_Fade = FADE_NONE;
 			g_Time = 60;
 		}
@@ -135,7 +135,7 @@ void UpdateFade()
 		}
 		break;
 	case FADE_STAY:
-		if (g_Time < 0) {
+		if (g_Time <= 0) {
 			g_Fade = FADE_IN;
 			g_Time = 60;
 			ChangeScene(g_NextScene);

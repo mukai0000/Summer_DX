@@ -83,6 +83,11 @@ void Map::Update()
 {
 
 	int speed = 1;
+
+
+	if (GetKeyboardPress(DIK_LSHIFT)) {
+		speed = 10;
+	}
 	if (GetKeyboardPress(DIK_A)) {
 		m_CameraCentor.x -= speed;
 	}
@@ -109,8 +114,8 @@ void Map::Update()
 	if (m_CameraCentor.y <= BLOCK_SIZE * 9) {
 		m_CameraCentor.y = BLOCK_SIZE * 9;
 	}
-	else if (m_CameraCentor.y >= MAP_SIZE * BLOCK_SIZE - BLOCK_SIZE * 2) {
-		m_CameraCentor.y = MAP_SIZE * BLOCK_SIZE - BLOCK_SIZE * 2;
+	else if (m_CameraCentor.y >= MAP_SIZE * BLOCK_SIZE - BLOCK_SIZE * 3) {
+		m_CameraCentor.y = MAP_SIZE * BLOCK_SIZE - BLOCK_SIZE * 3;
 	}
 
 
@@ -155,9 +160,14 @@ void Map::Draw()
 			rb = x * b.wide + b.wide + SCREEN_WIDTH * 0.5 - (b.wide * subX);
 
 			if (y >= 0 && y <= MAP_SIZE && centorX + x >= 0 && centorX + x < MAP_SIZE) {
-				int tile = m_Map[y + centorY][x + centorX];
+				int tile = m_Map[y][x + centorX];
 				//DrawSprite_TB_FOUR(&box, &t.pos, &b.pos, &lt, &rt, &lb, &rb);
-				DrawSprite_TB_FOUR(m_MapTex, t.pos, b.pos, lt, rt, lb, rb, tile);
+				if (m_Map[y][x + centorX] == 10) {
+					DrawSprite_TB_FOUR(m_MapTex, t.pos, b.pos, lt, rt, lb, rb, 1 + 16);
+				}
+				else {
+					DrawSprite_TB_FOUR(m_MapTex, t.pos, b.pos, lt, rt, lb, rb, tile);
+				}
 			}
 
 		}
@@ -340,10 +350,10 @@ void Map::InitiarizeMap()
 		for (int x = 0; x < MAP_SIZE; x++) {
 			if (mp[y][x] == 10)	m_Map[y][x] = 10;
 			else if (mp[y][x] == 1) {
-				int r = rand() % 50;
-				if (r < 5)m_Map[y][x] = 3;
-				else if (r < 15)m_Map[y][x] = 2;
-				else m_Map[y][x] = 1;
+				int r = rand() % 100;
+				if (r < 7)m_Map[y][x] = 3 + 16;
+				else if (r < 20)m_Map[y][x] = 2 + 16;
+				else m_Map[y][x] = 1 + 16;
 			}
 		}
 	}
