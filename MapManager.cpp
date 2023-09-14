@@ -82,8 +82,7 @@ void Map::Uninit()
 void Map::Update()
 {
 
-	int speed = 1;
-
+	/*int speed = 1;
 
 	if (GetKeyboardPress(DIK_LSHIFT)) {
 		speed = 10;
@@ -99,7 +98,7 @@ void Map::Update()
 	}
 	if (GetKeyboardPress(DIK_S)) {
 		m_CameraCentor.y += speed;
-	}
+	}*/
 
 
 	//画面外に出ない用
@@ -195,28 +194,28 @@ void Map::Draw()
 	DrawNumberSumple(D3DXVECTOR2(100, 100), D3DXVECTOR2(50, 50), (int)(m_CameraCentor.y));
 }
 
-bool Map::GetCollider(D3DXVECTOR2* move)
+bool Map::GetCollider(const D3DXVECTOR2& move)
 {
 	int x, y;
-	x = (int)((m_PlayerPos->x + move->x) / MAP_SIZE);
-	y = (int)((m_PlayerPos->y + move->y) / MAP_SIZE);
+	x = (int)((m_PlayerPos->x + move.x) / MAP_SIZE);
+	y = (int)((m_PlayerPos->y + move.y) / MAP_SIZE);
 
-	if (m_Map[y][x] == 0)return true;
-
-
-
-	return false;
-}
-
-bool Map::GetCollider(D3DXVECTOR2* pos, D3DXVECTOR2* move)
-{
-	int x, y;
-	x = (int)((pos->x + move->x) / MAP_SIZE);
-	y = (int)((pos->y + move->y) / MAP_SIZE);
+	if (x < 0 && y < 0)return false;
 
 	if (m_Map[y][x] < 10)return true;
 
+	return false;
+}
+								 
+bool Map::GetCollider(const D3DXVECTOR2& pos, const D3DXVECTOR2& move)
+{
+	int x, y;
+	x = (int)((pos.x + move.x) / MAP_SIZE);
+	y = (int)((pos.y + move.y) / MAP_SIZE);
 
+	if (x < 0 && y < 0)return false;
+
+	if (m_Map[y][x] < 10)return true;
 
 	return false;
 }
@@ -357,6 +356,58 @@ void Map::InitiarizeMap()
 			}
 		}
 	}
+}
+
+void Map::InitializePlayer()
+{
+	m_PlayerTex = SetTexture("data/TEXTURE/player_walk.png", 3, 4, 12);
+
+	m_PlayerLook = LOOK_DOWN;
+}
+
+void Map::Player_Update()
+{
+	D3DXVECTOR2 vel = { 0.0f,0.0f };
+	int spd = 2;
+
+	if (GetKeyboardPress(DIK_LSHIFT))spd = 3;
+
+	//同時押しされてないとき 同時押しの時は軸移動は停止
+	if (GetKeyboardPress(DIK_D) && !GetKeyboardPress(DIK_A)) {
+		m_PlayerLook = LOOK_RIGHT;
+		vel.x = -1.0f;
+	}
+	else if (!GetKeyboardPress(DIK_D) && GetKeyboardPress(DIK_A)) {
+		m_PlayerLook = LOOK_LEFT;
+		vel.x = 1.0f;
+	}
+	
+	if (GetKeyboardPress(DIK_W) && !GetKeyboardPress(DIK_S)) {
+		m_PlayerLook = LOOK_UP;
+		vel.y = -1.0f;
+	}
+	else if (!GetKeyboardPress(DIK_W) && GetKeyboardPress(DIK_S)) {
+		m_PlayerLook = LOOK_DOWN;
+		vel.y = 1.0f;
+	}
+
+	//単位塩化
+	D3DXVec2Normalize(&vel, &vel);
+
+	//実際の移動速度
+	vel *= spd;
+
+	//移動先が移動不可だったら
+	if(!GetCollider(m_PlayerData.pos,D3DXVECTOR2(vel.x,0)))
+	{
+		vel.x = 0.0f;
+	}
+	if(!GetCollider(m_PlayerData.pos,D3DXVECTOR2(0, vel.y)))
+	{
+		vel.y = 0.0f;
+	}
+
+	m_PlayerData.pos += vel;
 }
 
 WIDE_POS Map::GetMapDrawPos(int y)

@@ -30,6 +30,7 @@ typedef enum {
 }MODE;
 
 typedef struct {
+	D3DXVECTOR2 pos;
 	float hp;
 	float maxHp;
 	float energy;
@@ -37,6 +38,14 @@ typedef struct {
 	int shotTime;
 	int coolTime;
 }PLAYER_DATA;
+
+typedef enum {
+	LOOK_DOWN,
+	LOOK_LEFT,
+	LOOK_RIGHT,
+	LOOK_UP,
+	LOOK_MAX
+}LOOK_VEC;
 
 typedef struct {
 	bool isLive;
@@ -55,21 +64,17 @@ public:
 	void Uninit();
 	void Update();
 	void Update_Move();
-	void Update_Shot();
-	void Update_Play();
 	void Draw();
-	void Draw_Move();
-	void Draw_Shot();
-	void Draw_Play();
 
-	bool GetCollider(D3DXVECTOR2* move);
-	bool GetCollider(D3DXVECTOR2* pos, D3DXVECTOR2* move);
+
+	bool GetCollider(const D3DXVECTOR2& move);
+	bool GetCollider(const D3DXVECTOR2& pos, const D3DXVECTOR2& move);
 
 	//補助
-	WIDE_POS	GetDrawWidePos(D3DXVECTOR2 pos);
-	float		GetDrawHight(float y);
-	float		GetDrawHight(int y);
-	float		GetDrawAngle(float y);
+	WIDE_POS	GetDrawWidePos(const D3DXVECTOR2 pos);
+	float		GetDrawHight(const float y);
+	float		GetDrawHight(const int y);
+	float		GetDrawAngle(const float y);
 
 
 	//弾発射
@@ -80,6 +85,9 @@ public:
 private:
 	void InitiarizeMap();
 
+	void InitializePlayer();
+	void Player_Update();
+	void Player_Draw();
 private:
 	WIDE_POS	GetMapDrawPos(int y);
 
@@ -98,18 +106,24 @@ private:
 	unsigned int m_BGTex;
 
 	TEXTURE_DATA m_MapTex;
+
 	//画像
 
+	//プレイヤー回り
+	TEXTURE_DATA m_PlayerTex;
 	const int PLAYER_BULLET = 10;
 	const int ENEMY_BULLET = 20;
 	BULLET* m_PlayerBullet;
 	BULLET* m_EnemyBullet;
 
 	PLAYER_DATA m_PlayerData;
+	LOOK_VEC	m_PlayerLook;
+
 	const int USE_ENERGY = 30;
 
 	const int MAX_TIME = 1800;
 	int m_Time;
+	//プレイヤー回り
 
 	MODE m_Mode;
 
