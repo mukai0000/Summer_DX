@@ -101,6 +101,8 @@ void Map::Update()
 	}*/
 
 
+	m_CameraCentor = m_PlayerData.pos;
+
 	//‰æ–ÊŠO‚Éo‚È‚¢—p
 	//X
 	if (m_CameraCentor.x <= BLOCK_SIZE * 8) {
