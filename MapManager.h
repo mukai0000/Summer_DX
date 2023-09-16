@@ -8,6 +8,7 @@
 #define MAIN_H
 #include "main.h"
 #include "texture.h"
+#include "UI.h"
 #endif // !MAIN_H
 
 #define MAP_SIZE 50
@@ -31,6 +32,8 @@ typedef enum {
 
 typedef struct {
 	D3DXVECTOR2 pos;
+	D3DXVECTOR2 draw;
+	float drawWide;
 	float hp;
 	float maxHp;
 	float energy;
@@ -46,6 +49,14 @@ typedef enum {
 	LOOK_UP,
 	LOOK_MAX
 }LOOK_VEC;
+
+typedef enum {
+	ANIM_1,
+	ANIM_2,
+	ANIM_IDOL = 1,
+	ANIM_3,
+	ANIM_MAX
+}PLAYER_ANIM;
 
 typedef struct {
 	bool isLive;
@@ -78,18 +89,21 @@ public:
 
 
 	//弾発射
-	void		SetPlayerShot(D3DXVECTOR2 pos);
 
 	void		SetEnemyShot(D3DXVECTOR2 pos);
 
 private:
-	void InitiarizeMap();
+	void		InitiarizeMap();
 
-	void InitializePlayer();
-	void Player_Update();
-	void Player_Draw();
+	//Player
+	void		InitializePlayer();
+	void		Player_Update();
+	void		SetPlayerShot(const D3DXVECTOR2& vel);
+	void		Player_Draw();
+	void		PlayerDrawPosUpdate();
 private:
 	WIDE_POS	GetMapDrawPos(int y);
+	WIDE_POS	GetMapDrawPos(float y);
 
 	D3DXVECTOR2* m_PlayerPos;			//プレイヤーの場所を取得するために必要なもの
 
@@ -116,14 +130,23 @@ private:
 	BULLET* m_PlayerBullet;
 	BULLET* m_EnemyBullet;
 
+	bool m_IsMoveUP;
+
 	PLAYER_DATA m_PlayerData;
 	LOOK_VEC	m_PlayerLook;
 
 	const int USE_ENERGY = 30;
 
+	int m_PlayerAnimFlame;
+	const int m_PlayerAnimTime = 20;
+
+	GageBar* m_HpBar = nullptr;
+	GageBar* m_MpBar = nullptr;
+
+	//プレイヤー回り
+
 	const int MAX_TIME = 1800;
 	int m_Time;
-	//プレイヤー回り
 
 	MODE m_Mode;
 

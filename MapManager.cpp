@@ -36,10 +36,10 @@ Map::Map()
 
 	m_MapTex = SetTexture("data/TEXTURE/Tile.png", 16, 16, 256);
 
-	m_CameraCentor = {			  
+	/*m_CameraCentor = {			  
 		BLOCK_SIZE * MAP_SIZE * 0.9f,
 		BLOCK_SIZE * MAP_SIZE * 0.9f
-	};
+	};*/
 	mouse = {
 		SCREEN_WIDTH * 0.2f,
 		SCREEN_HEIGHT * 0.2f
@@ -48,26 +48,26 @@ Map::Map()
 	m_MouseTex = LoadTexture((char*)"data/TEXTURE/MousePoint.png");
 	m_BGTex = LoadTexture((char*)"data/TEXTURE/sky.png");
 
-	m_PlayerBullet = new BULLET[PLAYER_BULLET];
-	m_EnemyBullet = new BULLET[ENEMY_BULLET];
 
-	m_Time - MAX_TIME;
+	m_Time = MAX_TIME;
 
-	m_PlayerData.maxHp = 100;
-	m_PlayerData.hp = 100;
-	m_PlayerData.maxEnergy = 200;
-	m_PlayerData.energy = 0;
-	m_PlayerData.shotTime = m_PlayerData.coolTime;
+	//プレイヤーの初期化
+	InitializePlayer();
+	//プレイヤーの初期化した値を受け取る　いらないっちゃいらないけど作ったから使う
+	Init(&m_PlayerData.pos);
 
+	m_CameraCentor = m_PlayerData.pos;
 
 	m_Mode = MODE::MODE_MOVE;
-	for (int i = 0; i < PLAYER_BULLET; i++) {
-		m_PlayerBullet[i].isActive = false;
-	}
-
-	for (int i = 0; i < ENEMY_BULLET; i++) {
+	/*for (int i = 0; i < ENEMY_BULLET; i++) {
 		m_EnemyBullet[i].isActive = false;
-	}
+	}*/
+
+	//UIUIUIUIUIUIUI
+	UI_DATA=SetUI_DATA("",1,1,1)
+	m_HpBar=new GageBar()
+
+
 }
 
 void Map::Init(D3DXVECTOR2* playerPos)
@@ -100,8 +100,10 @@ void Map::Update()
 		m_CameraCentor.y += speed;
 	}*/
 
+	Player_Update();
 
 	m_CameraCentor = m_PlayerData.pos;
+	//m_CameraCentor = *m_PlayerPos;
 
 	//画面外に出ない用
 	//X
@@ -155,10 +157,10 @@ void Map::Draw()
 	for (int y = startY; y <= endY; y++) {
 		for (int x = startX; x <= endX; x++) {
 
-			lt = x * t.wide + SCREEN_WIDTH * 0.5 - (t.wide * subX);
-			rt = x * t.wide + t.wide + SCREEN_WIDTH * 0.5 - (t.wide * subX);
-			lb = x * b.wide + SCREEN_WIDTH * 0.5 - (b.wide * subX);
-			rb = x * b.wide + b.wide + SCREEN_WIDTH * 0.5 - (b.wide * subX);
+			lt = x * t.wide + SCREEN_WIDTH * 0.5f - (t.wide * subX);
+			rt = x * t.wide + t.wide + SCREEN_WIDTH * 0.5f - (t.wide * subX);
+			lb = x * b.wide + SCREEN_WIDTH * 0.5f - (b.wide * subX);
+			rb = x * b.wide + b.wide + SCREEN_WIDTH * 0.5f - (b.wide * subX);
 
 			if (y >= 0 && y <= MAP_SIZE && centorX + x >= 0 && centorX + x < MAP_SIZE) {
 				int tile = m_Map[y][x + centorX];
@@ -177,34 +179,37 @@ void Map::Draw()
 		b = GetMapDrawPos(y + 2);
 	}
 
-
-
-	//プレイヤーの描画場所は基本固定
-	D3DXVECTOR2 pos = { SCREEN_WIDTH * 0.5f,SCREEN_HEIGHT * 0.7f };
-	D3DXVECTOR2 siz = { 100,100 };
-	D3DXCOLOR col = { 1.0f,1.0f,1.0f,1.0f };
-	DrawBoxColor(&pos, &siz, col);
+	Player_Draw();
+	////プレイヤーの描画場所は基本固定
+	//WIDE_POS wp = GetDrawWidePos(D3DXVECTOR2(1250,1250 + aaaa));
+	//D3DXVECTOR2 pos = {(float)(wp.pos+ SCREEN_WIDTH * 0.5),GetMapDrawPos(1250.0f+aaaa).pos };
+	//D3DXVECTOR2 siz = { wp.wide,wp.wide };
+	//D3DXCOLOR col = { 1.0f,1.0f,1.0f,1.0f };
+	//int a = 1;
+	////DrawBoxColor(&pos, &siz, col);
+	//DrawAnimation_BottomCentor(SetTexture("data/TEXTURE/box.png", 1, 1, 1), pos, siz, col, a);
 
 	mouse.x += GetMouseX();
 	mouse.y += GetMouseY();
 
-	DrawSpriteLeftTop(m_MouseTex, GetMousePosition().x, GetMousePosition().y, 30, 30, 0, 0, 1, 1);
-	//ShowCursor(true);
-	ShowCursor(false);
+	//DrawSpriteLeftTop(m_MouseTex, GetMousePosition().x, GetMousePosition().y, 30, 30, 0, 0, 1, 1);
+	////ShowCursor(true);
+	//ShowCursor(false);
 
 
-	DrawNumberSumple(D3DXVECTOR2(100, 100), D3DXVECTOR2(50, 50), (int)(m_CameraCentor.y));
+	//DrawNumberSumple(D3DXVECTOR2(100, 100), D3DXVECTOR2(50, 50), (int)(m_CameraCentor.x));
 }
 
 bool Map::GetCollider(const D3DXVECTOR2& move)
 {
 	int x, y;
+	x = y = 0;
 	x = (int)((m_PlayerPos->x + move.x) / MAP_SIZE);
 	y = (int)((m_PlayerPos->y + move.y) / MAP_SIZE);
 
-	if (x < 0 && y < 0)return false;
+	if (x < 0 || y < 0 || y >= MAP_SIZE || x >= MAP_SIZE)return false;
 
-	if (m_Map[y][x] < 10)return true;
+	if (m_Map[y][x] != 10)return true;
 
 	return false;
 }
@@ -212,12 +217,16 @@ bool Map::GetCollider(const D3DXVECTOR2& move)
 bool Map::GetCollider(const D3DXVECTOR2& pos, const D3DXVECTOR2& move)
 {
 	int x, y;
-	x = (int)((pos.x + move.x) / MAP_SIZE);
-	y = (int)((pos.y + move.y) / MAP_SIZE);
+	x = y = 0;
+	x = (int)(pos.x + move.x);
+	y = (int)(pos.y + move.y);
 
-	if (x < 0 && y < 0)return false;
+	x /= BLOCK_SIZE;
+	y /= BLOCK_SIZE;
 
-	if (m_Map[y][x] < 10)return true;
+	if (x < 0 || y < 0|| y >= MAP_SIZE || x >= MAP_SIZE)return false;
+
+	if (m_Map[y][x] != 10)return true;
 
 	return false;
 }
@@ -225,15 +234,15 @@ bool Map::GetCollider(const D3DXVECTOR2& pos, const D3DXVECTOR2& move)
 
 WIDE_POS Map::GetDrawWidePos(D3DXVECTOR2 pos)
 {
-	WIDE_POS ret = { 0,0 };
+	WIDE_POS ret = { 0,0 };	
 
-	float angle = GetDrawAngle(pos.y);				//角度取得
+	float angle = GetDrawAngle(pos.y);					//角度取得
 	if (angle < 0 /*|| angle>HULF_PI*/)return ret;		//画面外だったら
 
-	ret.wide = WIDE_WIDE * (1 + (sinf(angle) * 0.5f));
+	ret.wide = WIDE_WIDE * (1 + (sinf(angle) * 0.5f));	//1ブロックの幅ﾎﾟｲﾝｺﾞﾈ
 
 	float subX = pos.x - m_CameraCentor.x;
-	subX = (int)(subX + 0.5f) * 0.02f;				//内部管理は50で1マスだから
+	subX = (int)(subX + 0.5f) * 0.02f;					//内部管理は50で1マスだから
 	ret.pos = subX * ret.wide;
 
 	return ret;
@@ -242,18 +251,18 @@ WIDE_POS Map::GetDrawWidePos(D3DXVECTOR2 pos)
 float Map::GetDrawHight(float y)	//Holizonに追加して使う　地平線から基準点までを1とした割合
 {
 	float angle = GetDrawAngle(y);		//角度を取得
-	if (angle < 0)return -1 * (1.0f - cos(angle));			//範囲外だったら終了
+	if (angle < 0)return -1.0f * (float)(1.0f - cos(angle));		//範囲外だったら終了
 
-	return 1.0f - cos(angle);
+	return 1.0f - (float)cos(angle);
 }
 
 float Map::GetDrawHight(int y)
 {
 	float posY = y * BLOCK_SIZE;
 	float angle = GetDrawAngle(posY);		//角度を取得
-	if (angle < 0)return -1 * (1.0f - cos(angle));			//範囲外だったら終了
+	if (angle < 0)return -1.0f * (float)(1.0f - cos(angle));			//範囲外だったら終了
 
-	return 1.0f - cos(angle);
+	return 1.0f - (float)cos(angle);
 }
 
 float Map::GetDrawAngle(float y)
@@ -262,7 +271,7 @@ float Map::GetDrawAngle(float y)
 	//if (y< m_CameraCentor.y - DRAW_HIGHT || y>m_CameraCentor.y + DRAW_UNDER)return -1;
 
 	//小数点以下を四捨五入
-	int pos = (int)(y + 0.5f) - (m_CameraCentor.y - DRAW_HIGHT);
+	int pos = (int)((y + 0.5f) - (m_CameraCentor.y - DRAW_HIGHT));
 
 	//地平線から画面したまでの割合
 	float ret = pos / (DRAW_HIGHT + DRAW_UNDER);
@@ -271,19 +280,43 @@ float Map::GetDrawAngle(float y)
 	return ret * HULF_PI;
 }
 
-void Map::SetPlayerShot(D3DXVECTOR2 pos)
+void Map::SetPlayerShot(const D3DXVECTOR2& vel)
 {
 	if (m_PlayerData.energy >= USE_ENERGY && m_PlayerData.shotTime <= 0) {
 		for (int i = 0; i < PLAYER_BULLET; i++) {
 			if (m_PlayerBullet[i].isActive) {
 				m_PlayerBullet[i].isActive = true;
-				m_PlayerBullet[i].pos = pos;
-				m_PlayerBullet[i].vel = D3DXVECTOR2(0, -5);
+				m_PlayerBullet[i].pos = m_PlayerData.pos;
+				m_PlayerBullet[i].vel = vel * 10;
 				m_PlayerData.energy -= USE_ENERGY;
 				m_PlayerData.shotTime = m_PlayerData.coolTime;				
 				break;
 			}
 		}
+	}
+}
+
+void Map::Player_Draw()
+{
+	WIDE_POS wp = GetDrawWidePos(m_PlayerData.pos);
+	D3DXVECTOR2 pos = { (float)(wp.pos + SCREEN_WIDTH * 0.5),GetMapDrawPos(m_PlayerData.pos.y).pos};
+	D3DXVECTOR2 siz = { wp.wide,wp.wide };
+	D3DXCOLOR col = { 1.0f,1.0f,1.0f,1.0f };
+	//プレイヤーのアニメフレーム管理時間/アニメ切り替え時間％アニメの数　+テクスチャの横分割数＊向いてる方向
+	int anim = (m_PlayerAnimFlame / m_PlayerAnimTime % ANIM_MAX) + m_PlayerTex.wide * m_PlayerLook;
+
+	//DrawBoxColor(&pos, &siz, col);
+	DrawAnimation_BottomCentor(m_PlayerTex, pos, siz, col, anim);
+}
+
+void Map::PlayerDrawPosUpdate()
+{
+	//アップデートフラグがTrueだったら
+	if (m_IsMoveUP) {
+		m_PlayerData.draw.y = GetDrawHight(m_PlayerData.pos.y);
+		WIDE_POS wp=GetDrawWidePos(m_PlayerData.pos);
+		m_PlayerData.draw.x = wp.pos;
+		m_PlayerData.drawWide = wp.wide;
 	}
 }
 
@@ -364,7 +397,26 @@ void Map::InitializePlayer()
 {
 	m_PlayerTex = SetTexture("data/TEXTURE/player_walk.png", 3, 4, 12);
 
+	//下向き
 	m_PlayerLook = LOOK_DOWN;
+	//
+	m_PlayerData.pos = {
+		BLOCK_SIZE * MAP_SIZE * 0.5f,		
+		BLOCK_SIZE * MAP_SIZE * 0.5f };
+	m_PlayerData.maxEnergy = 100;
+	m_PlayerData.energy = m_PlayerData.maxEnergy;
+	m_PlayerData.maxHp = 200;
+	m_PlayerData.hp = m_PlayerData.maxHp;
+	m_PlayerData.shotTime = 0;
+	m_PlayerData.coolTime = 30;
+
+	m_PlayerBullet = new BULLET[PLAYER_BULLET];		//プレイヤーの玉の配列宣言
+	//m_EnemyBullet = new BULLET[ENEMY_BULLET];
+	for (int i = 0; i < PLAYER_BULLET; i++) {
+		m_PlayerBullet[i].isActive = false;
+		m_PlayerBullet[i].pos = { 0.0f,0.0f };
+		m_PlayerBullet[i].vel = { 0.0f,0.0f };
+	}
 }
 
 void Map::Player_Update()
@@ -377,11 +429,11 @@ void Map::Player_Update()
 	//同時押しされてないとき 同時押しの時は軸移動は停止
 	if (GetKeyboardPress(DIK_D) && !GetKeyboardPress(DIK_A)) {
 		m_PlayerLook = LOOK_RIGHT;
-		vel.x = -1.0f;
+		vel.x = 1.0f;
 	}
 	else if (!GetKeyboardPress(DIK_D) && GetKeyboardPress(DIK_A)) {
 		m_PlayerLook = LOOK_LEFT;
-		vel.x = 1.0f;
+		vel.x = -1.0f;
 	}
 	
 	if (GetKeyboardPress(DIK_W) && !GetKeyboardPress(DIK_S)) {
@@ -393,13 +445,29 @@ void Map::Player_Update()
 		vel.y = 1.0f;
 	}
 
+	//アニメーション用
+	if (!GetKeyboardPress(DIK_D) && !GetKeyboardPress(DIK_A) &&
+		!GetKeyboardPress(DIK_W) && !GetKeyboardPress(DIK_S)) {
+		m_PlayerAnimFlame = m_PlayerAnimTime * ANIM_IDOL;
+	}
+	else {
+		m_PlayerAnimFlame++;
+	}
+	//アニメーション用
+
 	//単位塩化
 	D3DXVec2Normalize(&vel, &vel);
+
+	//玉の発射
+	//velの数値がいじられる前に球の発射
+	if (GetKeyboardPress(DIK_SPACE)) {
+		SetPlayerShot(vel);
+	}
 
 	//実際の移動速度
 	vel *= spd;
 
-	//移動先が移動不可だったら
+	//移動先が移動不可だったらその軸の移動は０
 	if(!GetCollider(m_PlayerData.pos,D3DXVECTOR2(vel.x,0)))
 	{
 		vel.x = 0.0f;
@@ -418,6 +486,16 @@ WIDE_POS Map::GetMapDrawPos(int y)
 	float pos = HOLIZON_POS + (GetDrawHight(y) * HOLIZON_TO_BOTTOM_WIDE);
 	ret.pos = pos;
 	ret.wide = GetDrawWidePos(D3DXVECTOR2(0, y * BLOCK_SIZE)).wide;
+
+	return ret;
+}
+
+WIDE_POS Map::GetMapDrawPos(float y)
+{
+	WIDE_POS ret;
+	float pos = HOLIZON_POS + (GetDrawHight(y) * HOLIZON_TO_BOTTOM_WIDE);
+	ret.pos = pos;
+	ret.wide = GetDrawWidePos(D3DXVECTOR2(0, y)).wide;
 
 	return ret;
 }

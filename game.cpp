@@ -94,6 +94,12 @@ void DrawGame()
 	}
 
 	DrawFade();
+
+	int m_MouseTex = LoadTexture((char*)"data/TEXTURE/MousePoint.png");
+	DrawSpriteLeftTop(m_MouseTex, GetMousePosition().x, GetMousePosition().y, 30, 30, 0, 0, 1, 1);
+	//ShowCursor(true);
+	ShowCursor(false);
+
 }
 
 void SetFade(SCENE next, D3DXVECTOR2 target)

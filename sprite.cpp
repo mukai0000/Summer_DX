@@ -632,7 +632,7 @@ void DrawSprite(TEXTURE_DATA* tex, D3DXVECTOR2* pos, D3DXVECTOR2* size)
 	GetDeviceContext()->Draw(BOX_VERTEX_NUM, 0);
 }
 
-void DrawSprite_LT(TEXTURE_DATA* tex, D3DXVECTOR2* pos, D3DXVECTOR2* size, D3DXCOLOR* col,D3DXVECTOR4* uv) {
+void DrawSprite_LT(TEXTURE_DATA* tex, D3DXVECTOR2* pos, D3DXVECTOR2* size, D3DXCOLOR* col, D3DXVECTOR4* uv) {
 	D3D11_MAPPED_SUBRESOURCE msr;
 	GetDeviceContext()->Map(g_VertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &msr);
 
@@ -868,7 +868,7 @@ void DrawAnimation_LT(TEXTURE_DATA* tex, D3DXVECTOR2* pos, D3DXVECTOR2* size, D3
 
 	int u = target % (int)tex->wide;
 	int v = target / (int)tex->wide;
-	
+
 
 	// 頂点０番（左上の頂点）
 	vertex[0].Position = D3DXVECTOR3(pos->x, pos->y, 0.0f);
@@ -902,6 +902,57 @@ void DrawAnimation_LT(TEXTURE_DATA* tex, D3DXVECTOR2* pos, D3DXVECTOR2* size, D3
 
 	// テクスチャ設定
 	GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(tex->texCord));
+
+	// ポリゴン描画
+	GetDeviceContext()->Draw(BOX_VERTEX_NUM, 0);
+}
+
+void DrawAnimation_BottomCentor(const TEXTURE_DATA& tex, const D3DXVECTOR2& pos, const D3DXVECTOR2& size, const D3DXCOLOR& col, int& target)
+{
+	D3D11_MAPPED_SUBRESOURCE msr;
+	GetDeviceContext()->Map(g_VertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &msr);
+
+	VERTEX_3D* vertex = (VERTEX_3D*)msr.pData;
+
+	float uw = 1.0f / (int)tex.wide;
+	float vh = 1.0f / (int)tex.hight;
+
+	int u = target % (int)tex.wide;
+	int v = target / (int)tex.wide;
+
+
+	// 頂点０番（左上の頂点）
+	vertex[0].Position = D3DXVECTOR3(pos.x - size.x * 0.5f, pos.y - size.y, 0.0f);
+	vertex[0].Diffuse = col;
+	vertex[0].TexCoord = D3DXVECTOR2(u * uw, v * vh);
+
+	// 頂点１番（右上の頂点）
+	vertex[1].Position = D3DXVECTOR3(pos.x + size.x * 0.5f, pos.y - size.y, 0.0f);
+	vertex[1].Diffuse = col;
+	vertex[1].TexCoord = D3DXVECTOR2(u * uw + uw, v * vh);
+
+	// 頂点２番（左下の頂点）
+	vertex[2].Position = D3DXVECTOR3(pos.x - size.x * 0.5f, pos.y, 0.0f);
+	vertex[2].Diffuse = col;
+	vertex[2].TexCoord = D3DXVECTOR2(u * uw, v * vh + vh);
+
+	// 頂点３番（右下の頂点）
+	vertex[3].Position = D3DXVECTOR3(pos.x + size.x * 0.5f, pos.y, 0.0f);
+	vertex[3].Diffuse = col;
+	vertex[3].TexCoord = D3DXVECTOR2(u * uw + uw, v * vh + vh);
+
+	GetDeviceContext()->Unmap(g_VertexBuffer, 0);
+
+	// 頂点バッファ設定
+	UINT stride = sizeof(VERTEX_3D);
+	UINT offset = 0;
+	GetDeviceContext()->IASetVertexBuffers(0, 1, &g_VertexBuffer, &stride, &offset);
+
+	// プリミティブトポロジ設定
+	GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+
+	// テクスチャ設定
+	GetDeviceContext()->PSSetShaderResources(0, 1, GetTexture(tex.texCord));
 
 	// ポリゴン描画
 	GetDeviceContext()->Draw(BOX_VERTEX_NUM, 0);
