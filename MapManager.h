@@ -53,9 +53,8 @@ typedef enum {
 typedef enum {
 	ANIM_1,
 	ANIM_2,
-	ANIM_IDOL = 1,
-	ANIM_3,
-	ANIM_MAX
+	ANIM_MAX,
+	ANIM_IDOL = 2,
 }PLAYER_ANIM;
 
 typedef struct {
@@ -88,9 +87,6 @@ public:
 	float		GetDrawAngle(const float y);
 
 
-	//弾発射
-
-	void		SetEnemyShot(D3DXVECTOR2 pos);
 
 private:
 	void		InitiarizeMap();
@@ -100,7 +96,12 @@ private:
 	void		Player_Update();
 	void		SetPlayerShot(const D3DXVECTOR2& vel);
 	void		Player_Draw();
-	void		PlayerDrawPosUpdate();
+
+		//UI
+	void		InitializeUI();
+	void		UpdateUI();
+	void		DrawUI();
+
 private:
 	WIDE_POS	GetMapDrawPos(int y);
 	WIDE_POS	GetMapDrawPos(float y);
@@ -111,8 +112,8 @@ private:
 
 	D3DXVECTOR2 mouse;
 
-	char m_Map[MAP_SIZE][MAP_SIZE];
-	float subX, subY;
+	char		m_Map[MAP_SIZE][MAP_SIZE];
+	float		subX, subY;
 	
 	//画像
 	unsigned int m_MouseTex;
@@ -125,32 +126,36 @@ private:
 
 	//プレイヤー回り
 	TEXTURE_DATA m_PlayerTex;
-	const int PLAYER_BULLET = 10;
-	const int ENEMY_BULLET = 20;
-	BULLET* m_PlayerBullet;
-	BULLET* m_EnemyBullet;
+	const int	PLAYER_BULLET = 10;
+	const int	ENEMY_BULLET = 20;
+	BULLET*		m_PlayerBullet;
+	BULLET*		m_EnemyBullet;
 
-	bool m_IsMoveUP;
+	bool		m_IsMoveUP;
 
 	PLAYER_DATA m_PlayerData;
 	LOOK_VEC	m_PlayerLook;
 
-	const int USE_ENERGY = 30;
+	const int	USE_ENERGY = 30;
 
-	int m_PlayerAnimFlame;
-	const int m_PlayerAnimTime = 20;
+	int			m_PlayerAnimFlame;
+	const int	m_PlayerAnimTime = 20;
+	bool		m_IsNotMove;
 
-	GageBar* m_HpBar = nullptr;
-	GageBar* m_MpBar = nullptr;
+		//UI
+	int			m_ResourceUiTex;
+	GageBar*	m_HpBar = nullptr;
+	GageBar*	m_MpBar = nullptr;
+	GageBar*	m_ExpBar = nullptr;
 
 	//プレイヤー回り
 
-	const int MAX_TIME = 1800;
-	int m_Time;
+	const int	MAX_TIME = 1800;
+	int			m_Time;
 
-	MODE m_Mode;
+	MODE		m_Mode;
 
-	int m_Score;
+	int			m_Score;
 
 	//定数
 	

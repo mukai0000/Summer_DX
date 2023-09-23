@@ -64,9 +64,7 @@ Map::Map()
 	}*/
 
 	//UIUIUIUIUIUIUI
-	UI_DATA=SetUI_DATA("",1,1,1)
-	m_HpBar=new GageBar()
-
+	InitializeUI();
 
 }
 
@@ -198,6 +196,8 @@ void Map::Draw()
 
 
 	//DrawNumberSumple(D3DXVECTOR2(100, 100), D3DXVECTOR2(50, 50), (int)(m_CameraCentor.x));
+
+	DrawUI();
 }
 
 bool Map::GetCollider(const D3DXVECTOR2& move)
@@ -303,21 +303,45 @@ void Map::Player_Draw()
 	D3DXVECTOR2 siz = { wp.wide,wp.wide };
 	D3DXCOLOR col = { 1.0f,1.0f,1.0f,1.0f };
 	//プレイヤーのアニメフレーム管理時間/アニメ切り替え時間％アニメの数　+テクスチャの横分割数＊向いてる方向
-	int anim = (m_PlayerAnimFlame / m_PlayerAnimTime % ANIM_MAX) + m_PlayerTex.wide * m_PlayerLook;
-
+	int anim = ANIM_IDOL + m_PlayerTex.wide * m_PlayerLook;
+	if(!m_IsNotMove) anim = (m_PlayerAnimFlame / m_PlayerAnimTime % ANIM_MAX) + m_PlayerTex.wide * m_PlayerLook;
 	//DrawBoxColor(&pos, &siz, col);
 	DrawAnimation_BottomCentor(m_PlayerTex, pos, siz, col, anim);
 }
 
-void Map::PlayerDrawPosUpdate()
+
+void Map::InitializeUI()
 {
-	//アップデートフラグがTrueだったら
-	if (m_IsMoveUP) {
-		m_PlayerData.draw.y = GetDrawHight(m_PlayerData.pos.y);
-		WIDE_POS wp=GetDrawWidePos(m_PlayerData.pos);
-		m_PlayerData.draw.x = wp.pos;
-		m_PlayerData.drawWide = wp.wide;
-	}
+	m_ResourceUiTex = LoadTexture("data/expHpMp_288x110.png");
+
+	float num = m_PlayerData.hp / m_PlayerData.maxHp;
+	UI_DATA ud = SetUI_DATA("data/hp_186x30.png", 1, 1, 1, { 192,30 }, { 372,60 }, { 1,1,1,1 }, true, num);
+	m_HpBar = new GageBar(ud, FILL_VEC::FILL_RIGHT);
+
+	num = m_PlayerData.energy / m_PlayerData.maxEnergy;
+	ud = SetUI_DATA("data/mp_159x21.png", 1, 1, 1, { 225,102 }, { 318,42 }, { 1,1,1,1 }, true, num);
+	m_MpBar = new GageBar(ud, FILL_VEC::FILL_RIGHT);
+
+	num = 0.0f;
+	ud = SetUI_DATA("data/exp_96x96.png", 1, 1, 1, { 25,23 }, { 192,192 }, { 1,1,1,1 }, true, num);
+	m_ExpBar = new GageBar(ud, FILL_VEC::FILL_UP);
+}
+
+void Map::DrawUI()
+{
+	TEXTURE_DATA td;
+	td.texCord = m_ResourceUiTex;
+	td.maxAnim = 1;
+	td.wide = 1;
+	td.hight = 1;
+	D3DXVECTOR2 pos = { 10,10 };
+	D3DXVECTOR2 size = { 576,220 };
+	D3DXVECTOR4 uv = {1,1,1,1};
+	D3DXCOLOR c = {1,1,1,1};
+	DrawSprite_LT(&td, &pos, &size, &c, &uv);
+	m_ExpBar->Draw();
+	m_HpBar->Draw();
+	m_MpBar->Draw();
 }
 
 void Map::InitiarizeMap()
@@ -449,9 +473,11 @@ void Map::Player_Update()
 	if (!GetKeyboardPress(DIK_D) && !GetKeyboardPress(DIK_A) &&
 		!GetKeyboardPress(DIK_W) && !GetKeyboardPress(DIK_S)) {
 		m_PlayerAnimFlame = m_PlayerAnimTime * ANIM_IDOL;
+		m_IsNotMove = true;
 	}
 	else {
 		m_PlayerAnimFlame++;
+		m_IsNotMove = false;
 	}
 	//アニメーション用
 
